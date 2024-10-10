@@ -1,0 +1,37 @@
+package controllers
+
+import javax.inject._
+import play.api._
+import play.api.mvc._
+import de.htwg.Reversi
+import de.htwg.model.Move
+
+/**
+ * This controller creates an `Action` to handle HTTP requests to the
+ * application's home page.
+ */
+@Singleton
+class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+
+  /**
+   * Create an Action to render an HTML page.
+   *
+   * The configuration in the `routes` file means that this method
+   * will be called when the application receives a `GET` request with
+   * a path of `/`.
+   */
+    
+  val gameController = Reversi.controller
+  
+  def index() = Action { implicit request: Request[AnyContent] =>
+    print(gameController.toString)
+    Ok(views.html.index(gameController.toString))
+  }
+  
+  def move() = Action { implicit request: Request[AnyContent] =>
+    val row = request.getQueryString("r").map(_.toInt).getOrElse(0)
+    val column = request.getQueryString("c").map(_.toInt).getOrElse(0)
+    gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
+    Ok(views.html.index(gameController.toString))
+  }
+}
