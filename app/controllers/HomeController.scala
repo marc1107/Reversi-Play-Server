@@ -20,18 +20,31 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-    
-  val gameController = Reversi.controller
-  
-  def index() = Action { implicit request: Request[AnyContent] =>
+
+  private val gameController = Reversi.controller
+
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     print(gameController.toString)
-    Ok(views.html.index(gameController.toString))
+    Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
-  
-  def move() = Action { implicit request: Request[AnyContent] =>
+
+  def makeMoveQuery(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val row = request.getQueryString("r").map(_.toInt).getOrElse(0)
     val column = request.getQueryString("c").map(_.toInt).getOrElse(0)
-    gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
-    Ok(views.html.index(gameController.toString))
+
+    doMove(row, column)
+
+    Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
+
+  def makeMoveSubmit(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val row = request.body.asFormUrlEncoded.flatMap(_.get("row").flatMap(_.headOption)).map(_.toInt).getOrElse(0)
+    val column = request.body.asFormUrlEncoded.flatMap(_.get("column").flatMap(_.headOption)).map(_.toInt).getOrElse(0)
+
+    doMove(row, column)
+
+    Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
+  }
+
+  private def doMove(row: Int, column: Int) = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 }
