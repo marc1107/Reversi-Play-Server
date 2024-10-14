@@ -1,6 +1,17 @@
-@(tuiString: String)
+@(tuiString: String, playerState: String)
 
 @main("Welcome to Reversi") {
   <h1>Reversi</h1>
+  <p>It's @playerState's turn</p>
   <pre>@tuiString</pre>
+
+  @helper.form(action = routes.HomeController.makeMoveSubmit()) {
+    <label for="row">Row:</label>
+    <input type="text" id="row" name="row" required>
+
+    <label for="column">Column:</label>
+    <input type="text" id="column" name="column" required>
+
+    <button type="submit">Set Stone</button>
+  }
 }
