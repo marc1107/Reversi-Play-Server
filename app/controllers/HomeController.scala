@@ -46,5 +46,5 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
 
-  private def doMove(row: Int, column: Int) = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
+  private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 }
