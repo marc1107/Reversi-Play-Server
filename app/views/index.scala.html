@@ -5,7 +5,7 @@
   <p>It's @playerState's turn</p>
   <pre>@tuiString</pre>
 
-  @helper.form(action = routes.HomeController.makeMoveSubmit()) {
+  @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
     <label for="row">Row:</label>
     <input type="text" id="row" name="row" required>
 

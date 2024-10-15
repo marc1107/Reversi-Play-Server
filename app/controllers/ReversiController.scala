@@ -11,7 +11,7 @@ import de.htwg.model.Move
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class ReversiController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.
@@ -46,5 +46,5 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
 
-  private def doMove(row: Int, column: Int) = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
+  private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 }
