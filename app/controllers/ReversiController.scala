@@ -42,11 +42,6 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     val column = request.body.asFormUrlEncoded.flatMap(_.get("column").flatMap(_.headOption)).map(_.toInt).getOrElse(0)
 
     doMove(row, column)
-    println("hello")
-    println(gameController.field)
-    println("hello1")
-    println(gameController.field.toString)
-    println("hello2")
 
     Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
