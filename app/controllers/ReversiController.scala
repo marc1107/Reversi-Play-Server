@@ -46,5 +46,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     Ok(views.html.index(gameController.toString, gameController.playerState.getStone.toString))
   }
 
+
+
   private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 }
