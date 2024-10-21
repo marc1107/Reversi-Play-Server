@@ -1,7 +1,6 @@
 /* public/stylesheets/main.css */
 table.board {
     border-collapse: collapse;
-    width: 100%;
 }
 
 table.board td {
