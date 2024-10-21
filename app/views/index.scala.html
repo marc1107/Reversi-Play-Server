@@ -1,18 +1,21 @@
-@(tuiString: String, playerState: String)
+@import utils.BoardHelper
+@import de.htwg.model.fieldComponent.FieldInterface
+
+@(field: FieldInterface, playerState: String)
 
 @main("Welcome to Reversi") {
   <h1>Reversi</h1>
-  <p>It's @playerState's turn</p>
-  <pre>@tuiString</pre>
+  <p>Es ist @playerState's Zug</p>
+  @Html(BoardHelper.boardToHtml(field))
 
   @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-    <label for="row">Row:</label>
+    <label for="row">Reihe:</label>
     <input type="text" id="row" name="row" required>
 
-    <label for="column">Column:</label>
+    <label for="column">Spalte:</label>
     <input type="text" id="column" name="column" required>
 
-    <button type="submit">Set Stone</button>
+    <button type="submit">Stein setzen</button>
   }
 
   <p><a href="@routes.ReversiController.rules()">View Game Rules</a></p>
