@@ -4,7 +4,24 @@
 @(field: FieldInterface, playerState: String)
 
 @main("Welcome to Reversi") {
-  <h1>Reversi</h1>
+  <div class="header-container">
+    <div class="stone-container">
+      <div class="stone">
+        <div class="stone-side front"></div>
+        <div class="stone-side back"></div>
+      </div>
+    </div>
+
+    <h1>Reversi</h1>
+
+    <div class="stone-container">
+      <div class="stone">
+        <div class="stone-side front"></div>
+        <div class="stone-side back"></div>
+      </div>
+    </div>
+  </div>
+
   <p>Es ist @playerState's Zug</p>
   @Html(BoardHelper.boardToHtml(field))
 
