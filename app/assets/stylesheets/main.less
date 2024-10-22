@@ -1,5 +1,6 @@
 body {
-  background-color: gainsboro;
+  background-color: palegreen;
+  overflow: hidden;
 }
 
 .header-container {
@@ -92,3 +93,226 @@ td {
 }
 // Stone style
 // --------------------------------------------------
+
+// --------------------------------------------------
+// Cylinder Style
+.scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  perspective: 600px;
+  overflow: hidden;
+}
+
+.cylinder1 {
+  position: absolute;
+  top: 0;
+  left: 47%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove6 20s infinite linear;
+  z-index: -1;
+}
+
+.cylinder2 {
+  position: absolute;
+  top: 0;
+  left: 85%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove7 16s infinite linear;
+  z-index: -1;
+}
+
+.cylinder3 {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove2 23s infinite linear;
+  z-index: -1;
+}
+
+.cylinder4 {
+  position: absolute;
+  top: 0;
+  left: 36%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove3 25s infinite linear;
+  z-index: -1;
+}
+
+.cylinder5 {
+  position: absolute;
+  top: 0;
+  left: 63%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove4 15s infinite linear;
+  z-index: -1;
+}
+
+.cylinder6 {
+  position: absolute;
+  top: 0;
+  left: 23%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove5 17s infinite linear;
+  z-index: -1;
+}
+
+.cylinder7 {
+  position: absolute;
+  top: 0;
+  left: 70%;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotateAndMove1 21s infinite linear;
+  z-index: -1;
+}
+
+.face {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.top {
+  background-color: black;
+  transform: translateZ(0px);
+}
+.top1 {
+  background-color: black;
+  transform: translateZ(1px);
+}
+.top2 {
+  background-color: black;
+  transform: translateZ(2px);
+}
+.top3 {
+  background-color: black;
+  transform: translateZ(3px);
+}
+.top4 {
+  background-color: black;
+  transform: translateZ(4px);
+}
+.top5 {
+  background-color: black;
+  transform: translateZ(5px);
+}
+
+.bottom {
+  background-color: white;
+  transform: translateZ(-1px);
+}
+.bottom1 {
+  background-color: white;
+  transform: translateZ(-2px);
+}
+.bottom2 {
+  background-color: white;
+  transform: translateZ(-3px);
+}
+.bottom3 {
+  background-color: white;
+  transform: translateZ(-4px);
+}
+.bottom4 {
+  background-color: white;
+  transform: translateZ(-5px);
+}
+.bottom5 {
+  background-color: white;
+  transform: translateZ(-6px);
+}
+
+.side {
+  position: absolute;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  background-color: gray; /* Color for the side of the cylinder */
+  border-radius: 50%;
+}
+
+@keyframes rotateAndMove1 {
+  0% {
+    transform: rotateY(-90deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(90deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove2 {
+  0% {
+    transform: rotateY(-110deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(30deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove3 {
+  0% {
+    transform: rotateY(-90deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(0deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove4 {
+  0% {
+    transform: rotateY(-60deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(70deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove5 {
+  0% {
+    transform: rotateY(-50deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(110deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove6 {
+  0% {
+    transform: rotateY(90deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(-270deg) translateY(110vh); /* Return to top */
+  }
+}
+
+@keyframes rotateAndMove7 {
+  0% {
+    transform: rotateY(290deg) translateY(-10vh);
+  }
+  100% {
+    transform: rotateY(340deg) translateY(110vh); /* Return to top */
+  }
+}
+// Cylinder style
+// --------------------------------------------------
+.content {
+  position: relative; /* Ensure it can have a higher z-index */
+  z-index: 1; /* Place above the cylinder */
+}
