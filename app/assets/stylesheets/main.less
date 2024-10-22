@@ -1,17 +1,33 @@
 .board {
   border-collapse: collapse;
   width: fit-content;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .board td {
   border: 1px solid #000;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   text-align: center;
   vertical-align: middle;
 }
 
 .board td:hover {
   background-color: #f0f0f0;
+}
+
+h1 {
+  font-size: 2em;
+  color: #333;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+td {
+  cursor: pointer;
+  font-size: 2em;
+  text-align: center;
+  vertical-align: center;
+  display: table-cell;
+  background-color: green;
 }
