@@ -12,7 +12,11 @@ object BoardHelper {
         cell <- 0 until board.size
       } yield {
         val stone: Stone = board.get(row + 1, cell + 1)
-        val content = if (stone == Stone.Empty) "&nbsp;" else stone.toString
+        val content = stone match {
+          case Stone.W => "<div class='stone white'></div>"
+          case Stone.B => "<div class='stone black'></div>"
+          case Stone.Empty => "&nbsp;"
+        }
         s"<td>$content</td>"
       }
       s"<tr>${rowContent.mkString}</tr>"
