@@ -3,14 +3,32 @@ body {
   overflow: hidden;
 }
 
+.content {
+  position: relative; /* Ensure it can have a higher z-index */
+  z-index: 1; /* Place above the cylinder */
+  display: flex;
+  flex-direction: column;
+ }
+
+.content-wrapper {
+  margin: 0 auto;
+}
+
 .header-container {
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 7em;
 }
 
 .header-container h1 {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.board-container {
+  display: flex;
+  justify-content: center;
 }
 
 .board {
@@ -113,7 +131,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove6 20s infinite linear;
+  animation: rotateAndMove6 12s infinite linear;
   z-index: -1;
 }
 
@@ -124,7 +142,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove7 16s infinite linear;
+  animation: rotateAndMove7 8s infinite linear;
   z-index: -1;
 }
 
@@ -135,7 +153,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove2 23s infinite linear;
+  animation: rotateAndMove2 14s infinite linear;
   z-index: -1;
 }
 
@@ -146,7 +164,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove3 25s infinite linear;
+  animation: rotateAndMove3 15s infinite linear;
   z-index: -1;
 }
 
@@ -157,7 +175,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove4 15s infinite linear;
+  animation: rotateAndMove4 9s infinite linear;
   z-index: -1;
 }
 
@@ -168,7 +186,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove5 17s infinite linear;
+  animation: rotateAndMove5 10s infinite linear;
   z-index: -1;
 }
 
@@ -179,7 +197,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove1 21s infinite linear;
+  animation: rotateAndMove1 13s infinite linear;
   z-index: -1;
 }
 
@@ -312,7 +330,3 @@ td {
 }
 // Cylinder style
 // --------------------------------------------------
-.content {
-  position: relative; /* Ensure it can have a higher z-index */
-  z-index: 1; /* Place above the cylinder */
-}

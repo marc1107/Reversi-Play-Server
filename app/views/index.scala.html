@@ -7,37 +7,39 @@
   @background()
 
   <div class="content">
-    <div class="header-container">
-      <div class="stone-container">
-        <div class="stone">
-          <div class="stone-side front"></div>
-          <div class="stone-side back"></div>
+    <div class="content-wrapper">
+      <div class="header-container">
+        <div class="stone-container">
+          <div class="stone">
+            <div class="stone-side front"></div>
+            <div class="stone-side back"></div>
+          </div>
+        </div>
+
+        <h1>Reversi</h1>
+
+        <div class="stone-container">
+          <div class="stone">
+            <div class="stone-side front"></div>
+            <div class="stone-side back"></div>
+          </div>
         </div>
       </div>
 
-      <h1>Reversi</h1>
+      <span>Es ist @playerState's Zug</span>
+      @Html(BoardHelper.boardToHtml(field))
 
-      <div class="stone-container">
-        <div class="stone">
-          <div class="stone-side front"></div>
-          <div class="stone-side back"></div>
-        </div>
-      </div>
+      @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
+        <label for="row">Reihe:</label>
+        <input type="text" id="row" name="row" required>
+
+        <label for="column">Spalte:</label>
+        <input type="text" id="column" name="column" required>
+
+        <button type="submit">Stein setzen</button>
+      }
+
+      <p><a href="@routes.ReversiController.rules()">View Game Rules</a></p>
     </div>
-
-    <p>Es ist @playerState's Zug</p>
-    @Html(BoardHelper.boardToHtml(field))
-
-    @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-      <label for="row">Reihe:</label>
-      <input type="text" id="row" name="row" required>
-
-      <label for="column">Spalte:</label>
-      <input type="text" id="column" name="column" required>
-
-      <button type="submit">Stein setzen</button>
-    }
-
-    <p><a href="@routes.ReversiController.rules()">View Game Rules</a></p>
   </div>
 }
