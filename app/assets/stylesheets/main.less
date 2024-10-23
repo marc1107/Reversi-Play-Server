@@ -1,8 +1,9 @@
 body {
-  background: rgb(161,219,163);
-  background: radial-gradient(circle, rgba(161,219,163,1) 0%, rgba(188,213,193,1) 67%, rgba(199,199,199,1) 100%);
+
+  background: rgba(186, 187, 186, 1.0);
+  background: radial-gradient(at center, rgba(186, 187, 186, 1.0), rgba(145, 252, 148, 1.0));
   overflow: hidden;
-  font-family: Impact, sans-serif;
+  font-family: Calibri, sans-serif;
 }
 
 .content {
@@ -28,40 +29,6 @@ body {
 }
 
 
-
-.stone {
-  width: 90%;
-  height: 90%;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: shrink-expand 1s forwards;
-}
-
-.stone.white {
-  background-color: white;
-}
-
-.stone.black {
-  background-color: black;
-}
-
-@keyframes shrink-expand {
-  0% {
-    width: 90%;
-    height: 90%;
-  }
-  50% {
-    width: 0;
-    height: 0;
-  }
-  100% {
-    width: 90%;
-    height: 90%;
-  }
-}
 
 h1 {
   font-size: 3em;
