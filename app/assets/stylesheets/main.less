@@ -1,6 +1,8 @@
 body {
-  background-color: palegreen;
+  background: rgb(161,219,163);
+  background: radial-gradient(circle, rgba(161,219,163,1) 0%, rgba(188,213,193,1) 67%, rgba(199,199,199,1) 100%);
   overflow: hidden;
+  font-family: Impact, sans-serif;
 }
 
 .content {
@@ -44,10 +46,13 @@ body {
 }
 
 h1 {
-  font-size: 2em;
-  color: #333;
+  font-size: 3em;
+  font-family: Impact, sans-serif;
+  color: black;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
   text-align: left;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 td {
@@ -57,6 +62,25 @@ td {
   vertical-align: center;
   display: table-cell;
   background-color: green;
+}
+
+.abutton {
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: x-large;
+  color: black;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  text-decoration: none;
+  text-align: center;
+  background-color: silver;
+  width: fit-content;
+  min-width: 100px;
+  box-shadow: black 2px 2px 10px;
+}
+
+.abutton:hover {
+  background-color: #b7b7b7;
 }
 
 // --------------------------------------------------
