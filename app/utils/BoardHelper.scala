@@ -4,6 +4,8 @@ import de.htwg.model.Stone
 import de.htwg.model.fieldComponent.FieldInterface
 
 object BoardHelper {
+  private var previousBoard: Option[FieldInterface] = None
+
   def boardToHtml(board: FieldInterface): String = {
     val tableContent = for {
       row <- 0 until board.size
@@ -12,15 +14,19 @@ object BoardHelper {
         cell <- 0 until board.size
       } yield {
         val stone: Stone = board.get(row + 1, cell + 1)
-        val content = stone match {
-          case Stone.W => "<div class='stone white animate'></div>"
-          case Stone.B => "<div class='stone black animate'></div>"
-          case Stone.Empty => "&nbsp;"
+        val previousStone: Option[Stone] = previousBoard.map(_.get(row + 1, cell + 1))
+        val content = (stone, previousStone) match {
+          case (Stone.W, Some(Stone.B)) => "<div class='stone white flip'></div>"
+          case (Stone.B, Some(Stone.W)) => "<div class='stone black flip'></div>"
+          case (Stone.W, _) => "<div class='stone white'></div>"
+          case (Stone.B, _) => "<div class='stone black'></div>"
+          case (Stone.Empty, _) => "&nbsp;"
         }
         s"<td>$content</td>"
       }
       s"<tr>${rowContent.mkString}</tr>"
     }
+    previousBoard = Some(board) // Update the previous board state
     s"""<table class="board">${tableContent.mkString}</table>"""
   }
 }
