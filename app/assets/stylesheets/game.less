@@ -2,3 +2,33 @@
 h2 {
   color: black;
 }
+
+.board {
+  border-collapse: collapse;
+  width: fit-content;
+  max-width: 800px;
+}
+
+.board td {
+  border: none;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+  background-color: transparent;
+  box-shadow: inset 0 0 5px #000, 0 0 5px #000;
+}
+
+.board td:hover {
+  background-color: #f0f0f0;
+}
+
+td {
+  cursor: pointer;
+  font-size: 2em;
+  text-align: center;
+  vertical-align: center;
+  display: table-cell;
+  background-color: transparent;
+}

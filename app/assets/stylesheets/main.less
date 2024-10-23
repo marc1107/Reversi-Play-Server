@@ -1,8 +1,7 @@
 body {
-  background-color: palegreen;
+  background: radial-gradient(circle, #d3d3d3, #a9a9a9, #696969);
   overflow: hidden;
 }
-
 .content {
   position: relative; /* Ensure it can have a higher z-index */
   z-index: 1; /* Place above the cylinder */
@@ -25,24 +24,7 @@ body {
   margin-right: 10px;
 }
 
-.board {
-  border-collapse: collapse;
-  width: fit-content;
-  max-width: 800px;
-}
 
-.board td {
-  border: 1px solid #000;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  vertical-align: middle;
-  position: relative;
-}
-
-.board td:hover {
-  background-color: #f0f0f0;
-}
 
 .stone {
   width: 90%;
@@ -85,14 +67,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-td {
-  cursor: pointer;
-  font-size: 2em;
-  text-align: center;
-  vertical-align: center;
-  display: table-cell;
-  background-color: green;
-}
+
 
 // --------------------------------------------------
 // Stone Style
