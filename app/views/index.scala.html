@@ -4,19 +4,42 @@
 @(field: FieldInterface, playerState: String)
 
 @main("Welcome to Reversi") {
-  <h1>Reversi</h1>
-  <p>Es ist @playerState's Zug</p>
-  @Html(BoardHelper.boardToHtml(field))
+  @background()
 
-  @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-    <label for="row">Reihe:</label>
-    <input type="text" id="row" name="row" required>
+  <div class="content">
+    <div class="content-wrapper">
+      <div class="header-container">
+        <div class="stone-container">
+          <div class="stone">
+            <div class="stone-side front"></div>
+            <div class="stone-side back"></div>
+          </div>
+        </div>
 
-    <label for="column">Spalte:</label>
-    <input type="text" id="column" name="column" required>
+        <h1>Reversi</h1>
 
-    <button type="submit">Stein setzen</button>
-  }
+        <div class="stone-container">
+          <div class="stone">
+            <div class="stone-side front"></div>
+            <div class="stone-side back"></div>
+          </div>
+        </div>
+      </div>
 
-  <p><a href="@routes.ReversiController.rules()">View Game Rules</a></p>
+      <span>Es ist @playerState's Zug</span>
+      @Html(BoardHelper.boardToHtml(field))
+
+      @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
+        <label for="row">Reihe:</label>
+        <input type="text" id="row" name="row" required>
+
+        <label for="column">Spalte:</label>
+        <input type="text" id="column" name="column" required>
+
+        <button type="submit">Stein setzen</button>
+      }
+
+      <p><a href="@routes.ReversiController.rules()">View Game Rules</a></p>
+    </div>
+  </div>
 }
