@@ -13,8 +13,8 @@ object BoardHelper {
       } yield {
         val stone: Stone = board.get(row + 1, cell + 1)
         val content = stone match {
-          case Stone.W => "<div class='stone white'></div>"
-          case Stone.B => "<div class='stone black'></div>"
+          case Stone.W => "<div class='stone white animate'></div>"
+          case Stone.B => "<div class='stone black animate'></div>"
           case Stone.Empty => "&nbsp;"
         }
         s"<td>$content</td>"
