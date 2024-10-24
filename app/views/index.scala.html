@@ -8,25 +8,26 @@
   @background()
 
   <div class="content">
-    <div class="content-wrapper">
       <div class="header-container">
-        <h1>Reversi</h1>
+          <h1>Reversi</h1>
       </div>
 
       @playerturn(playerState)
       @Html(BoardHelper.boardToHtml(field))
 
+      <div class="mainrow">
       @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-        <label for="row">Reihe:</label>
-        <input type="text" id="row" name="row" required>
+          <label for="row">Reihe:</label>
+          <input type="text" id="row" name="row" required>
 
-        <label for="column">Spalte:</label>
-        <input type="text" id="column" name="column" required>
+          <label for="column">Spalte:</label>
+          <input type="text" id="column" name="column" required>
 
-        <button type="submit">Stein setzen</button>
+          <button type="submit">Stein setzen</button>
       }
-
-      <p><a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a></p>
-    </div>
+      </div>
+  </div>
+  <div class="gamerules">
+      <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
   </div>
 }
