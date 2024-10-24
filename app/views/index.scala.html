@@ -15,17 +15,19 @@
       @playerturn(playerState)
       @Html(BoardHelper.boardToHtml(field))
 
-      <div class="mainrow">
       @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-          <label for="row">Reihe:</label>
-          <input type="text" id="row" name="row" required>
+      <div class="mainrow">
+          <div>
+              <label class="label" for="row">Reihe:</label>
+              <input class="textfield" type="text" id="row" name="row" required>
 
-          <label for="column">Spalte:</label>
-          <input type="text" id="column" name="column" required>
+              <label class="label" for="column" style="margin-left: 10px">Spalte:</label>
+              <input class="textfield" type="text" id="column" name="column" required>
+          </div>
 
-          <button type="submit">Stein setzen</button>
-      }
+          <button class="abutton" type="submit">Stein setzen</button>
       </div>
+      }
   </div>
   <div class="gamerules">
       <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>

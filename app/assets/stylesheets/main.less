@@ -42,6 +42,15 @@ body {
 
 .mainrow {
   align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+form {
+  width: 100%;
 }
 
 .gamerules {
@@ -49,6 +58,22 @@ body {
   bottom: 20px;
   left: 20px;
   display: flex;
+}
+
+.label {
+  font-size: large;
+}
+
+.textfield {
+  font-size: large;
+  border-radius: 10px;
+  height: 35px;
+  width: 35px;
+  text-align: center;
+}
+
+.textfield:focus {
+  outline: none;
 }
 
 h1 {
@@ -69,6 +94,7 @@ td {
 
 .abutton {
   font-size: large;
+  font-family: Impact, sans-serif;
   text-decoration: none;
   text-align: center;
   width: fit-content;
