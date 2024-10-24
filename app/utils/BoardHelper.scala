@@ -16,8 +16,8 @@ object BoardHelper {
         val stone: Stone = board.get(row + 1, cell + 1)
         val previousStone: Option[Stone] = previousBoard.map(_.get(row + 1, cell + 1))
         val content = (stone, previousStone) match {
-          case (Stone.W, Some(Stone.B)) => "<div class='stone white flip'></div>"
-          case (Stone.B, Some(Stone.W)) => "<div class='stone black flip'></div>"
+          case (Stone.B, Some(Stone.W)) => "<div class='stone white flip-to-black'></div>"
+          case (Stone.W, Some(Stone.B)) => "<div class='stone black flip-to-white'></div>"
           case (Stone.W, _) => "<div class='stone white'></div>"
           case (Stone.B, _) => "<div class='stone black'></div>"
           case (Stone.Empty, _) => "&nbsp;"
