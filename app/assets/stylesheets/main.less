@@ -1,5 +1,4 @@
 body {
-
   background: rgba(186, 187, 186, 1.0);
   background: radial-gradient(at center, rgba(186, 187, 186, 1.0), rgba(145, 252, 148, 1.0));
   overflow: hidden;
@@ -11,54 +10,98 @@ body {
   z-index: 1; /* Place above the cylinder */
   display: flex;
   flex-direction: column;
- }
-
-.content-wrapper {
-  margin: 0 auto;
+  align-items: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 10px;
 }
 
 .header-container {
+  text-align: center;
+  width: 100%;
+}
+
+.mainrow {
+  align-self: flex-start;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
-.header-container h1 {
-  margin-left: 10px;
-  margin-right: 10px;
+form {
+  width: 100%;
 }
 
+.gamerules {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+}
 
+.label {
+  font-size: large;
+}
+
+.textfield {
+  font-size: large;
+  border-radius: 10px;
+  height: 35px;
+  width: 35px;
+  text-align: center;
+}
+
+.textfield:focus {
+  outline: none;
+}
 
 h1 {
   font-size: 3em;
   font-family: Impact, sans-serif;
   color: black;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-  text-align: left;
-  margin-bottom: 20px;
-  margin-top: 20px;
 }
 
-
-
 .abutton {
-  border-radius: 15px;
-  padding: 10px 20px;
-  font-weight: bold;
-  font-size: x-large;
-  color: black;
-  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  font-size: large;
+  font-family: Calibri, sans-serif;
   text-decoration: none;
   text-align: center;
-  background-color: silver;
   width: fit-content;
   min-width: 100px;
-  box-shadow: black 2px 2px 10px;
+  touch-action: manipulation;
+  border: 1px solid green;
+  border-radius: 50px;
+  padding: 12px 16px;
+  background-color: green;
+  background-image: radial-gradient(75% 50% at 50% 0%, #f4feff 12%, transparent), radial-gradient(75% 50% at 50% 85%, #f4feff, transparent);
+  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.2), 0 1px 4px 1px rgba(17, 110, 231, 0.2), 0 1px 4px 1px rgba(0, 0, 0, 0.1);
+  color: black;
+  text-shadow: 0 1px 1px limegreen;
+  transition-property: border-color, transform, background-color;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  vertical-align: middle;
+  margin: 0;
+  text-transform: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(0.93);
 }
 
 .abutton:hover {
-  background-color: #b7b7b7;
+  background-color: darkgreen;
+  transform: scale(1);
+}
+
+.abutton:active {
+  border-color: darkgreen;
+  background-color: darkgreen;
+  transform: scale(0.7);
 }
 
 // --------------------------------------------------
@@ -80,7 +123,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove6 12s infinite linear;
+  animation: rotateAndMove6 29s infinite linear;
   z-index: -1;
 }
 
@@ -91,7 +134,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove7 8s infinite linear;
+  animation: rotateAndMove7 25s infinite linear;
   z-index: -1;
 }
 
@@ -102,7 +145,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove2 14s infinite linear;
+  animation: rotateAndMove2 31s infinite linear;
   z-index: -1;
 }
 
@@ -113,7 +156,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove3 15s infinite linear;
+  animation: rotateAndMove3 32s infinite linear;
   z-index: -1;
 }
 
@@ -124,7 +167,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove4 9s infinite linear;
+  animation: rotateAndMove4 26s infinite linear;
   z-index: -1;
 }
 
@@ -135,7 +178,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove5 10s infinite linear;
+  animation: rotateAndMove5 27s infinite linear;
   z-index: -1;
 }
 
@@ -146,7 +189,7 @@ h1 {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove1 13s infinite linear;
+  animation: rotateAndMove1 30s infinite linear;
   z-index: -1;
 }
 
