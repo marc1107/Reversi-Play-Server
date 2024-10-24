@@ -3,8 +3,20 @@
 @import de.htwg.model.Stone.*
 @(playerState: Stone)
 
-<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/rules.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/playerturn.css")">
 
-<div>
-    @if(playerState == B)
+<div class="playerinfo">
+    @if(playerState == B) {
+        <div class="playerturn black"></div>
+        <div class="playerturn black"></div>
+        <div class="playerturn black"></div>
+        <div class="playerturn black"></div>
+        <div class="playerturn black"></div>
+    } else {
+        <div class="playerturn white"></div>
+        <div class="playerturn white"></div>
+        <div class="playerturn white"></div>
+        <div class="playerturn white"></div>
+        <div class="playerturn white"></div>
+    }
 </div>

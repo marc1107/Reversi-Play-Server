@@ -1,7 +1,8 @@
 @import utils.BoardHelper
 @import de.htwg.model.fieldComponent.FieldInterface
+@import de.htwg.model.Stone
 
-@(field: FieldInterface, playerState: String)
+@(field: FieldInterface, playerState: Stone)
 
 @main("Welcome to Reversi") {
   @background()
@@ -9,24 +10,10 @@
   <div class="content">
     <div class="content-wrapper">
       <div class="header-container">
-        <div class="stone-container">
-          <div class="stone">
-            <div class="stone-side front"></div>
-            <div class="stone-side back"></div>
-          </div>
-        </div>
-
         <h1>Reversi</h1>
-
-        <div class="stone-container">
-          <div class="stone">
-            <div class="stone-side front"></div>
-            <div class="stone-side back"></div>
-          </div>
-        </div>
       </div>
 
-      <span>Es ist @playerState's Zug</span>
+      @playerturn(playerState)
       @Html(BoardHelper.boardToHtml(field))
 
       @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
