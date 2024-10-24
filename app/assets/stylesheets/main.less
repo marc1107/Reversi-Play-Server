@@ -1,8 +1,9 @@
 body {
-  background: rgb(161,219,163);
-  background: radial-gradient(circle, rgba(161,219,163,1) 0%, rgba(188,213,193,1) 67%, rgba(199,199,199,1) 100%);
+
+  background: rgba(186, 187, 186, 1.0);
+  background: radial-gradient(at center, rgba(186, 187, 186, 1.0), rgba(145, 252, 148, 1.0));
   overflow: hidden;
-  font-family: Impact, sans-serif;
+  font-family: Calibri, sans-serif;
 }
 
 .content {
@@ -22,23 +23,7 @@ body {
   width: 100%;
 }
 
-.board {
-  border-collapse: collapse;
-  width: fit-content;
-  max-width: 800px;
-}
 
-.board td {
-  border: 1px solid #000;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.board td:hover {
-  background-color: #f0f0f0;
-}
 
 .mainrow {
   align-self: flex-start;
@@ -83,14 +68,7 @@ h1 {
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
-td {
-  cursor: pointer;
-  font-size: 2em;
-  text-align: center;
-  vertical-align: center;
-  display: table-cell;
-  background-color: green;
-}
+
 
 .abutton {
   font-size: large;
