@@ -46,6 +46,12 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     Ok(views.html.index(gameController.field, gameController.playerState.getStone))
   }
 
+  def makeMoveClick(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    doMove(row, col)
+
+    Ok(views.html.index(gameController.field, gameController.playerState.getStone))
+  }
+
   def rules(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.rules())
   }
