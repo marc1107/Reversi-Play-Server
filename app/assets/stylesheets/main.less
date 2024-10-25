@@ -1,8 +1,8 @@
 body {
-  background: rgb(161,219,163);
-  background: radial-gradient(circle, rgba(161,219,163,1) 0%, rgba(188,213,193,1) 67%, rgba(199,199,199,1) 100%);
+  background: rgba(186, 187, 186, 1.0);
+  background: radial-gradient(at center, rgba(186, 187, 186, 1.0), rgba(145, 252, 148, 1.0));
   overflow: hidden;
-  font-family: Impact, sans-serif;
+  font-family: Calibri, sans-serif;
 }
 
 .content {
@@ -10,39 +10,52 @@ body {
   z-index: 1; /* Place above the cylinder */
   display: flex;
   flex-direction: column;
- }
-
-.content-wrapper {
-  margin: 0 auto;
+  align-items: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 10px;
 }
 
 .header-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-container h1 {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.board {
-  border-collapse: collapse;
-  width: fit-content;
-  max-width: 800px;
-}
-
-.board td {
-  border: 1px solid #000;
-  width: 60px;
-  height: 60px;
   text-align: center;
-  vertical-align: middle;
+  width: 100%;
 }
 
-.board td:hover {
-  background-color: #f0f0f0;
+.mainrow {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+form {
+  width: 100%;
+}
+
+.gamerules {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+}
+
+.label {
+  font-size: large;
+}
+
+.textfield {
+  font-size: large;
+  border-radius: 10px;
+  height: 35px;
+  width: 35px;
+  text-align: center;
+}
+
+.textfield:focus {
+  outline: none;
 }
 
 h1 {
@@ -50,85 +63,46 @@ h1 {
   font-family: Impact, sans-serif;
   color: black;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-  text-align: left;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-td {
-  cursor: pointer;
-  font-size: 2em;
-  text-align: center;
-  vertical-align: center;
-  display: table-cell;
-  background-color: green;
 }
 
 .abutton {
-  border-radius: 15px;
-  padding: 10px 20px;
-  font-weight: bold;
-  font-size: x-large;
-  color: black;
-  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  font-size: large;
+  font-family: Calibri, sans-serif;
   text-decoration: none;
   text-align: center;
-  background-color: silver;
   width: fit-content;
   min-width: 100px;
-  box-shadow: black 2px 2px 10px;
+  touch-action: manipulation;
+  border: 1px solid green;
+  border-radius: 50px;
+  padding: 12px 16px;
+  background-color: green;
+  background-image: radial-gradient(75% 50% at 50% 0%, #f4feff 12%, transparent), radial-gradient(75% 50% at 50% 85%, #f4feff, transparent);
+  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.2), 0 1px 4px 1px rgba(17, 110, 231, 0.2), 0 1px 4px 1px rgba(0, 0, 0, 0.1);
+  color: black;
+  text-shadow: 0 1px 1px limegreen;
+  transition-property: border-color, transform, background-color;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  vertical-align: middle;
+  margin: 0;
+  text-transform: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(0.93);
 }
 
 .abutton:hover {
-  background-color: #b7b7b7;
+  background-color: darkgreen;
+  transform: scale(1);
 }
 
-// --------------------------------------------------
-// Stone Style
-@keyframes flipStone {
-  0% {
-    transform: rotateY(0deg);
-  }
-  50% {
-    transform: rotateY(180deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
+.abutton:active {
+  border-color: darkgreen;
+  background-color: darkgreen;
+  transform: scale(0.7);
 }
-
-.stone-container {
-  perspective: 1000px;
-  width: 40px;
-  height: 40px;
-}
-
-.stone {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: flipStone 5s infinite linear;
-}
-
-.stone-side {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 50%;
-}
-
-.front {
-  background-color: black;
-}
-
-.back {
-  background-color: white;
-  transform: rotateY(180deg);
-}
-// Stone style
-// --------------------------------------------------
 
 // --------------------------------------------------
 // Cylinder Style
@@ -149,7 +123,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove6 12s infinite linear;
+  animation: rotateAndMove6 29s infinite linear;
   z-index: -1;
 }
 
@@ -160,7 +134,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove7 8s infinite linear;
+  animation: rotateAndMove7 22s infinite linear;
   z-index: -1;
 }
 
@@ -171,7 +145,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove2 14s infinite linear;
+  animation: rotateAndMove2 31s infinite linear;
   z-index: -1;
 }
 
@@ -182,7 +156,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove3 15s infinite linear;
+  animation: rotateAndMove3 32s infinite linear;
   z-index: -1;
 }
 
@@ -193,7 +167,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove4 9s infinite linear;
+  animation: rotateAndMove4 26s infinite linear;
   z-index: -1;
 }
 
@@ -204,7 +178,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove5 10s infinite linear;
+  animation: rotateAndMove5 27s infinite linear;
   z-index: -1;
 }
 
@@ -215,7 +189,7 @@ td {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  animation: rotateAndMove1 13s infinite linear;
+  animation: rotateAndMove1 30s infinite linear;
   z-index: -1;
 }
 
@@ -286,10 +260,10 @@ td {
 
 @keyframes rotateAndMove1 {
   0% {
-    transform: rotateY(-90deg) translateY(-10vh);
+    transform: rotateY(-110deg) translateY(-10vh);
   }
   100% {
-    transform: rotateY(90deg) translateY(110vh); /* Return to top */
+    transform: rotateY(-240deg) translateY(110vh); /* Return to top */
   }
 }
 
@@ -340,10 +314,10 @@ td {
 
 @keyframes rotateAndMove7 {
   0% {
-    transform: rotateY(290deg) translateY(-10vh);
+    transform: rotateY(370deg) translateY(-10vh);
   }
   100% {
-    transform: rotateY(340deg) translateY(110vh); /* Return to top */
+    transform: rotateY(240deg) translateY(110vh); /* Return to top */
   }
 }
 // Cylinder style

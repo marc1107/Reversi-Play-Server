@@ -2,3 +2,79 @@
 h2 {
   color: black;
 }
+
+.board {
+  //border-collapse: collapse;
+  border: 4px solid black;
+  width: fit-content;
+  max-width: 800px;
+}
+
+
+.board td {
+  cursor: pointer;
+  font-size: 2em;
+  border: none;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(0, 150, 0, 0.6); /* 80% transparent */
+}
+
+.board td:hover {
+  background-color: transparent;
+}
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+    background-color: transparent; /* Optional: make it invisible during the flip */
+  }
+  100% {
+    transform: rotateX(180deg);
+  }
+}
+
+@keyframes colorChangeToBlack {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: black;
+  }
+}
+
+@keyframes colorChangeToWhite {
+  0% {
+    background-color: black;
+  }
+  100% {
+    background-color: white;
+  }
+}
+
+.stone {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.stone.flip-to-black {
+  animation: flip 1.0s forwards, colorChangeToBlack 1.0s forwards;
+}
+
+.stone.flip-to-white {
+  animation: flip 1.0s forwards, colorChangeToWhite 1.0s forwards;
+}
+
+.stone.white {
+  background-color: white;
+}
+
+.stone.black {
+  background-color: black;
+}

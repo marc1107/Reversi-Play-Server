@@ -9,6 +9,7 @@ GET     /                           controllers.ReversiController.index()
 POST    /                           controllers.ReversiController.makeMoveSubmit()
 GET     /move                       controllers.ReversiController.makeMoveQuery()
 GET     /rules                      controllers.ReversiController.rules()
+GET     /makeMoveClick/:row/:col   controllers.ReversiController.makeMoveClick(row: Int, col: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

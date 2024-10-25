@@ -1,45 +1,43 @@
 @import utils.BoardHelper
 @import de.htwg.model.fieldComponent.FieldInterface
+@import de.htwg.model.Stone
 
-@(field: FieldInterface, playerState: String)
+@(field: FieldInterface, playerState: Stone)
 
 @main("Welcome to Reversi") {
   @background()
+  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/game.css")">
 
   <div class="content">
-    <div class="content-wrapper">
+      <script>
+              function makeMove(row, col) {
+                  console.log("Move made at row: " + row + ", column: " + col);
+                  window.location.href = `@routes.ReversiController.makeMoveClick(0, 0).url`.replace("0/0", row + "/" + col);
+              }
+      </script>
+
       <div class="header-container">
-        <div class="stone-container">
-          <div class="stone">
-            <div class="stone-side front"></div>
-            <div class="stone-side back"></div>
-          </div>
-        </div>
-
-        <h1>Reversi</h1>
-
-        <div class="stone-container">
-          <div class="stone">
-            <div class="stone-side front"></div>
-            <div class="stone-side back"></div>
-          </div>
-        </div>
+          <h1>Reversi</h1>
       </div>
 
-      <span>Es ist @playerState's Zug</span>
+      @playerturn(playerState)
       @Html(BoardHelper.boardToHtml(field))
 
       @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-        <label for="row">Reihe:</label>
-        <input type="text" id="row" name="row" required>
+      <div class="mainrow">
+          <div>
+              <label class="label" for="row">Reihe:</label>
+              <input class="textfield" type="text" id="row" name="row" required>
 
-        <label for="column">Spalte:</label>
-        <input type="text" id="column" name="column" required>
+              <label class="label" for="column" style="margin-left: 10px">Spalte:</label>
+              <input class="textfield" type="text" id="column" name="column" required>
+          </div>
 
-        <button type="submit">Stein setzen</button>
+          <button class="abutton" type="submit">Stein setzen</button>
+      </div>
       }
-
-      <p><a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a></p>
-    </div>
+  </div>
+  <div class="gamerules">
+      <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
   </div>
 }

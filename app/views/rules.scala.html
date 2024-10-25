@@ -2,25 +2,11 @@
 
 @main("Welcome to Reversi") {
   <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/rules.css")">
-  @background()
+
 
   <div class="content">
     <div class="header-container">
-      <div class="stone-container">
-        <div class="stone">
-          <div class="stone-side front"></div>
-          <div class="stone-side back"></div>
-        </div>
-      </div>
-
       <h1>Rules</h1>
-
-      <div class="stone-container">
-        <div class="stone">
-          <div class="stone-side front"></div>
-          <div class="stone-side back"></div>
-        </div>
-      </div>
     </div>
 
     <div class="row">
@@ -65,6 +51,8 @@
       </div>
     </div>
 
+  </div>
+  <div class="play">
     <a class="abutton" href="@routes.ReversiController.index()">Play</a>
   </div>
 }
