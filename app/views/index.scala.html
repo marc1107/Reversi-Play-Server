@@ -9,6 +9,13 @@
   <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/game.css")">
 
   <div class="content">
+      <script>
+              function makeMove(row, col) {
+                  console.log("Move made at row: " + row + ", column: " + col);
+                  window.location.href = `@routes.ReversiController.makeMoveClick(0, 0).url`.replace("0/0", row + "/" + col);
+              }
+      </script>
+
       <div class="header-container">
           <h1>Reversi</h1>
       </div>
