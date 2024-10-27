@@ -24,8 +24,12 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
   private val gameController = Reversi.controller
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.index())
+  }
+
+  def game(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     print(gameController.toString)
-    Ok(views.html.index(gameController.field, gameController.playerState.getStone))
+    Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
   def makeMoveQuery(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -34,7 +38,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     doMove(row, column)
 
-    Ok(views.html.index(gameController.field, gameController.playerState.getStone))
+    Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
   def makeMoveSubmit(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -43,13 +47,13 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     doMove(row, column)
 
-    Ok(views.html.index(gameController.field, gameController.playerState.getStone))
+    Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
   def makeMoveClick(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     doMove(row, col)
 
-    Ok(views.html.index(gameController.field, gameController.playerState.getStone))
+    Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
   def rules(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
