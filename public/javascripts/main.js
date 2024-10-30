@@ -5,6 +5,7 @@ function makeMove(row, col) {
         method: 'GET',
         success: function(response) {
             updateBoard(response);
+            playClickSound();
         },
         error: function(xhr, status, error) {
             console.error("Error making move:", error);
@@ -46,4 +47,9 @@ function updateBoard(response) {
     const playerClass = currentPlayer === "B" ? "black" : "white";
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
+}
+
+function playClickSound() {
+    const clickSound = document.getElementById('click-sound');
+    clickSound.play();
 }
