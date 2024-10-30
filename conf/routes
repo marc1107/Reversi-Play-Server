@@ -10,7 +10,6 @@ POST    /                           controllers.ReversiController.makeMoveSubmit
 GET     /game                       controllers.ReversiController.game()
 GET     /move                       controllers.ReversiController.makeMoveQuery()
 GET     /rules                      controllers.ReversiController.rules()
-GET     /makeMoveClick/:row/:col    controllers.ReversiController.makeMoveClick(row: Int, col: Int)
 GET     /makeMoveAjax/:row/:col     controllers.ReversiController.makeMoveAjax(row: Int, col: Int)
 
 # Map static resources from the /public folder to the /assets URL path

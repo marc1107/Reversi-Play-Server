@@ -58,12 +58,6 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
-  def makeMoveClick(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    doMove(row, col)
-
-    Ok(views.html.game(gameController.field, gameController.playerState.getStone))
-  }
-
   def makeMoveAjax(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val oldBoard = gameController.field
     val oldBoardJson = fieldToJson(oldBoard)
