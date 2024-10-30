@@ -7,7 +7,10 @@
 @main("Welcome to Reversi") {
   @background()
   <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/game.css")">
-  <audio id="click-sound" src="@routes.Assets.versioned("sounds/click1.mp3")" preload="auto"></audio>
+  <audio id="click-sound-click1" src="@routes.Assets.versioned("sounds/click1.mp3")" preload="auto"></audio>
+  <audio id="click-sound-click2" src="@routes.Assets.versioned("sounds/click2.mp3")" preload="auto"></audio>
+  <audio id="click-sound-click3" src="@routes.Assets.versioned("sounds/laser1.mp3")" preload="auto"></audio>
+  <audio id="error-sound1" src="@routes.Assets.versioned("sounds/error1.mp3")" preload="auto"></audio>
 
   <div class="content">
       <div class="header-container">
@@ -29,6 +32,11 @@
 
           <button class="abutton" type="submit">Stein setzen</button>
       </div>
+      <select id="sound-select" class="sound-select" onchange="changeClickSound()">
+          <option value="click1">Click 1</option>
+          <option value="click2">Click 2</option>
+          <option value="click3">Laser 1</option>
+      </select>
       }
   </div>
   <div class="gamerules">
