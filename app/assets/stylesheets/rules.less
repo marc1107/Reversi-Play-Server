@@ -7,7 +7,7 @@ h2 {
 body {
   background: rgba(186, 187, 186, 1.0);
   background: radial-gradient(at center, rgba(186, 187, 186, 1.0), rgba(145, 252, 148, 1.0));
-  overflow: hidden;
+  overflow: auto;
   font-family: Calibri, sans-serif;
 }
 
@@ -22,25 +22,16 @@ ul {
 .content {
   padding: 10px 2em;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
 }
 
 .cell {
   border: 1px solid #000;
   border-radius: 20px;
   padding: 8px 1rem;
-  width: 46%;
   height: fit-content;
   vertical-align: top;
-  //background-color: rgba(0, 150, 0, 0.7);
   background-color: transparent;
   display: flex;
   flex-direction: column;
@@ -50,8 +41,13 @@ ul {
 
 .play {
   position: fixed;
+  z-index: 2;
   bottom: 20px;
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.gap-15 {
+  gap: 15px;
 }
