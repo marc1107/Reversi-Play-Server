@@ -13,9 +13,13 @@
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" >
+        <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" ></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     </head>
     <body>
+        <audio id="button-click-sound" src="@routes.Assets.versioned("sounds/button_click1.mp3")" preload="auto"></audio>
         @* And here's where we render the `Html` object containing
          * the page content. *@
         @content
