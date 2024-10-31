@@ -1,7 +1,8 @@
 package utils
 
 import de.htwg.model.Stone
-import de.htwg.model.fieldComponent.FieldInterface
+import de.htwg.model.fieldComponent.{Field, FieldInterface}
+import play.api.libs.json.JsValue
 
 object BoardHelper {
   private var previousBoard: Option[FieldInterface] = None
@@ -28,5 +29,28 @@ object BoardHelper {
     }
     previousBoard = Some(board) // Update the previous board state
     s"""<table class="board">${tableContent.mkString}</table>"""
+  }
+
+  private def jsonToField(json: JsValue): FieldInterface = {
+    val size = (json \ "size").as[Int]
+    val cells = (json \ "cells").as[Array[Array[Array[String]]]]
+    val field = new Field(size, Stone.Empty)
+    for {
+      row <- 0 until size
+      col <- 0 until size
+    } {
+      val stone = cells(0)(row)(col) match {
+        case "B" => Stone.B
+        case "W" => Stone.W
+        case _ => Stone.Empty
+      }
+      field.put(stone, row + 1, col + 1)
+    }
+    field
+  }
+  
+  def boardToHtml(json: JsValue): String = {
+    val field = jsonToField(json)
+    boardToHtml(field)
   }
 }
