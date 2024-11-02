@@ -5,41 +5,56 @@
 @(field: FieldInterface, playerState: Stone)
 
 @main("Welcome to Reversi") {
-  @background()
-  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/game.css")">
-  <audio id="click-sound-click1" src="@routes.Assets.versioned("sounds/click1.mp3")" preload="auto"></audio>
-  <audio id="click-sound-click2" src="@routes.Assets.versioned("sounds/click2.mp3")" preload="auto"></audio>
-  <audio id="click-sound-click3" src="@routes.Assets.versioned("sounds/laser1.mp3")" preload="auto"></audio>
-  <audio id="error-sound1" src="@routes.Assets.versioned("sounds/error1.mp3")" preload="auto"></audio>
+    @background()
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/game.css")">
+    <audio id="click-sound-click1" src="@routes.Assets.versioned("sounds/click1.mp3")" preload="auto"></audio>
+    <audio id="click-sound-click2" src="@routes.Assets.versioned("sounds/click2.mp3")" preload="auto"></audio>
+    <audio id="click-sound-click3" src="@routes.Assets.versioned("sounds/laser1.mp3")" preload="auto"></audio>
+    <audio id="error-sound1" src="@routes.Assets.versioned("sounds/error1.mp3")" preload="auto"></audio>
 
-  <div class="content">
-      <div class="header-container">
-          <h1>Reversi</h1>
-      </div>
+    <div class="content">
+        <div class="header-container">
+            <h1>Reversi</h1>
+        </div>
+        <div id="widthDisplay"></div>
 
-      @playerturn(playerState)
-      @Html(BoardHelper.boardToHtml(field))
+        <script>
+                function updateWidthDisplay() {
+                    const width = window.innerWidth;
+                    document.getElementById("widthDisplay").innerText = `Breite: ${width}px`;
+                }
 
-      @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-      <div class="mainrow">
-          <div>
-              <label class="label" for="row">Reihe:</label>
-              <input class="textfield" type="text" id="row" name="row" required>
+                // Event-Listener für Fenstergrößenänderungen
+                window.addEventListener("resize", updateWidthDisplay);
 
-              <label class="label" for="column" style="margin-left: 10px">Spalte:</label>
-              <input class="textfield" type="text" id="column" name="column" required>
-          </div>
+                // Beim Laden initial anzeigen
+                updateWidthDisplay();
+        </script>
 
-          <button class="abutton" type="submit">Stein setzen</button>
-      </div>
-      <select id="sound-select" class="sound-select" onchange="changeClickSound()">
-          <option value="click1">Click 1</option>
-          <option value="click2">Click 2</option>
-          <option value="click3">Laser 1</option>
-      </select>
-      }
-  </div>
-  <div class="gamerules">
-      <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
-  </div>
+        @playerturn(playerState)
+        @Html(BoardHelper.boardToHtml(field))
+
+        @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
+            <div class="mainrow">
+                <div>
+                    <label class="label" for="row">Reihe:</label>
+                    <input class="textfield" type="text" id="row" name="row" required>
+
+                    <label class="label" for="column" style="margin-left: 10px">Spalte:</label>
+                    <input class="textfield" type="text" id="column" name="column" required>
+                </div>
+
+                <button class="abutton" type="submit">Stein setzen</button>
+            </div>
+            <select id="sound-select" class="sound-select" onchange="changeClickSound()">
+                <option value="click1">Click 1</option>
+                <option value="click2">Click 2</option>
+                <option value="click3">Laser 1</option>
+            </select>
+        }
+    </div>
+
+    <div class="gamerules">
+        <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
+    </div>
 }
