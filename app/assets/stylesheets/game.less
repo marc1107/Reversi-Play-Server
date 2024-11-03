@@ -1,15 +1,19 @@
-// Kann raus, aber mit ner leeren Datei gibt es Fehler beim starten
-h2 {
-  color: black;
+.scroll-container {
+  overflow-y: auto;
+  max-height: 100vh;
+  padding: 10px;
+}
+
+.content {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .board {
-  //border-collapse: collapse;
   border: 4px solid black;
   width: fit-content;
-  //max-width: 800px;
 }
-
 
 .board td {
   cursor: pointer;
@@ -19,41 +23,11 @@ h2 {
   height: 60px;
   text-align: center;
   vertical-align: middle;
-  background-color: rgba(0, 150, 0, 0.6); /* 80% transparent */
+  background-color: rgba(0, 150, 0, 0.6);
 }
 
 .board td:hover {
   background-color: transparent;
-}
-@keyframes flip {
-  0% {
-    transform: rotateX(0deg);
-  }
-  50% {
-    transform: rotateX(90deg);
-    background-color: transparent; /* Optional: make it invisible during the flip */
-  }
-  100% {
-    transform: rotateX(180deg);
-  }
-}
-
-@keyframes colorChangeToBlack {
-  0% {
-    background-color: white;
-  }
-  100% {
-    background-color: black;
-  }
-}
-
-@keyframes colorChangeToWhite {
-  0% {
-    background-color: black;
-  }
-  100% {
-    background-color: white;
-  }
 }
 
 .stone {
@@ -86,11 +60,7 @@ select {
   padding: 10px;
   border: 1px solid #32CD32;
   color: black;
-
   min-width: 100px;
-  width: fit-content;
-  min-height: 30px;
-  appearance: auto;
 }
 
 select:hover {
@@ -99,23 +69,21 @@ select:hover {
 
 select:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(50,205,50,0.8);
+  box-shadow: 0 0 5px rgba(50, 205, 50, 0.8);
 }
 
-/* Add responsive styles */
-
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .board td {
     width: 50px;
     height: 50px;
     font-size: 1.75em;
   }
+
   .stone {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    position: relative;
   }
 }
 
@@ -125,11 +93,11 @@ select:focus {
     height: 40px;
     font-size: 1.5em;
   }
+
   .stone {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    position: relative;
   }
 }
 
@@ -138,12 +106,17 @@ select:focus {
     width: 30px;
     height: 30px;
     font-size: 1.2em;
-
   }
+
   .stone {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    position: relative;
+  }
+}
+
+@media (min-width: 900px) {
+  .gamerules-small {
+    display: none;
   }
 }

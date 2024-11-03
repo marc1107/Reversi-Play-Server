@@ -12,49 +12,57 @@
     <audio id="click-sound-click3" src="@routes.Assets.versioned("sounds/laser1.mp3")" preload="auto"></audio>
     <audio id="error-sound1" src="@routes.Assets.versioned("sounds/error1.mp3")" preload="auto"></audio>
 
-    <div class="content">
-        <div class="header-container">
-            <h1>Reversi</h1>
-        </div>
-        <div id="widthDisplay"></div>
-
-        <script>
-                function updateWidthDisplay() {
-                    const width = window.innerWidth;
-                    document.getElementById("widthDisplay").innerText = `Breite: ${width}px`;
-                }
-
-                // Event-Listener für Fenstergrößenänderungen
-                window.addEventListener("resize", updateWidthDisplay);
-
-                // Beim Laden initial anzeigen
-                updateWidthDisplay();
-        </script>
-
-        @playerturn(playerState)
-        @Html(BoardHelper.boardToHtml(field))
-
-        @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-            <div class="mainrow">
-                <div>
-                    <label class="label" for="row">Reihe:</label>
-                    <input class="textfield" type="text" id="row" name="row" required>
-
-                    <label class="label" for="column" style="margin-left: 10px">Spalte:</label>
-                    <input class="textfield" type="text" id="column" name="column" required>
-                </div>
-
-                <button class="abutton" type="submit">Stein setzen</button>
+    <div class="scroll-container">
+        <div class="content">
+            <div class="header-container">
+                <h1>Reversi</h1>
             </div>
-            <select id="sound-select" class="sound-select" onchange="changeClickSound()">
-                <option value="click1">Click 1</option>
-                <option value="click2">Click 2</option>
-                <option value="click3">Laser 1</option>
-            </select>
-        }
-    </div>
+            <div id="widthDisplay"></div>
 
-    <div class="gamerules">
-        <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
+            <script>
+                    function updateWidthDisplay() {
+                        const width = window.innerWidth;
+                        document.getElementById("widthDisplay").innerText = `Breite: ${width}px`;
+                    }
+
+                    // Event listener for window resize
+                    window.addEventListener("resize", updateWidthDisplay);
+
+                    // Show initial width
+                    updateWidthDisplay();
+            </script>
+
+            @playerturn(playerState)
+            @Html(BoardHelper.boardToHtml(field))
+
+            @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
+                <div class="row align-items-center mb-2 gx-2">
+                    <div class="col-12 col-md-auto d-flex flex-wrap align-items-center">
+                        <label class="me-1" for="row">Reihe:</label>
+                        <input class="form-control form-control-sm me-2 mb-2 mb-md-0" type="text" id="row" name="row" required style="max-width: 80px;">
+
+                        <label class="me-1" for="column">Spalte:</label>
+                        <input class="form-control form-control-sm mb-2 mb-md-0" type="text" id="column" name="column" required style="max-width: 80px;">
+                    </div>
+                    <div class="col-12 col-md-auto text-md-end">
+                        <button class="abutton btn-sm" type="submit">Stein setzen</button>
+                    </div>
+                </div>
+                <label for="sound-select">Sound auswählen:</label>
+                <select id="sound-select" class="sound-select" onchange="changeClickSound()">
+                    <option value="click1">Click 1</option>
+                    <option value="click2">Click 2</option>
+                    <option value="click3">Laser 1</option>
+                </select>
+            }
+            <div class="gamerules-small">
+                <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
+            </div>
+
+        </div>
+
+        <div class="gamerules">
+            <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
+        </div>
     </div>
 }
