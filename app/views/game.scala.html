@@ -19,41 +19,33 @@
             </div>
             <div id="widthDisplay"></div>
 
-            <script>
-                    function updateWidthDisplay() {
-                        const width = window.innerWidth;
-                        document.getElementById("widthDisplay").innerText = `Breite: ${width}px`;
-                    }
-
-                    // Event listener for window resize
-                    window.addEventListener("resize", updateWidthDisplay);
-
-                    // Show initial width
-                    updateWidthDisplay();
-            </script>
-
             @playerturn(playerState)
             @Html(BoardHelper.boardToHtml(field))
 
             @helper.form(action = routes.ReversiController.makeMoveSubmit()) {
-                <div class="row align-items-center mb-2 gx-2">
-                    <div class="col-12 col-md-auto d-flex flex-wrap align-items-center">
-                        <label class="me-1" for="row">Reihe:</label>
-                        <input class="form-control form-control-sm me-2 mb-2 mb-md-0" type="text" id="row" name="row" required style="max-width: 80px;">
+                <div class="d-flex justify-content-center">
+                    <div class="row align-items-center d-flex justify-content-center mb-2 gx-2">
+                        <div class="col-12 col-md-auto d-flex flex-wrap align-items-center justify-content-center">
+                            <label class="me-1" for="row">Reihe:</label>
+                            <input class="form-control form-control-sm me-2 mb-2 mb-md-0" type="text" id="row" name="row" required style="max-width: 80px;">
 
-                        <label class="me-1" for="column">Spalte:</label>
-                        <input class="form-control form-control-sm mb-2 mb-md-0" type="text" id="column" name="column" required style="max-width: 80px;">
-                    </div>
-                    <div class="col-12 col-md-auto text-md-end">
-                        <button class="abutton btn-sm" type="submit">Stein setzen</button>
+                            <label class="me-1" for="column">Spalte:</label>
+                            <input class="form-control form-control-sm mb-2 mb-md-0" type="text" id="column" name="column" required style="max-width: 80px;">
+                        </div>
+                        <div class="col-12 col-md-auto text-center text-md-end">
+                            <button class="abutton btn-sm" type="submit">Stein setzen</button>
+                        </div>
+                        <div class="col-12 text-center mt-2">
+                            <label for="sound-select">Sound auswählen:</label>
+                            <select id="sound-select" class="sound-select" onchange="changeClickSound()">
+                                <option value="click1">Click 1</option>
+                                <option value="click2">Click 2</option>
+                                <option value="click3">Laser 1</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <label for="sound-select">Sound auswählen:</label>
-                <select id="sound-select" class="sound-select" onchange="changeClickSound()">
-                    <option value="click1">Click 1</option>
-                    <option value="click2">Click 2</option>
-                    <option value="click3">Laser 1</option>
-                </select>
+
             }
             <div class="gamerules-small">
                 <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>
