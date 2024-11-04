@@ -151,3 +151,48 @@ select:focus {
     display: none;
   }
 }
+
+.responsive-input {
+  max-width: 70px; /* Grundgröße für größere Bildschirme */
+  width: 80%; /* nimmt 80% des Containers auf mobilen Geräten */
+}
+
+@media (max-width: 576px) {
+  .responsive-input {
+    max-width: 50px; /* Maximalbreite verringern bei sehr kleinen Bildschirmen */
+  }
+}
+//.responsive-button {
+//  padding: 4px 8px; /* Kleinere Polsterung für einen kompakteren Button */
+//  font-size: 0.8rem; /* Kleinere Schriftgröße */
+//}
+
+@media (max-width: 576px) {
+    .abutton {
+      font-size: large;
+      font-family: Calibri, sans-serif;
+      text-decoration: none;
+      text-align: center;
+      width: fit-content;
+      min-width: 100px;
+      touch-action: manipulation;
+      border: 1px solid green;
+      border-radius: 50px;
+      padding: 6px 10px;
+      background-color: green;
+      background-image: radial-gradient(75% 50% at 50% 0%, #f4feff 12%, transparent), radial-gradient(75% 50% at 50% 85%, #f4feff, transparent);
+      box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.2), 0 1px 4px 1px rgba(17, 110, 231, 0.2), 0 1px 4px 1px rgba(0, 0, 0, 0.1);
+      color: black;
+      text-shadow: 0 1px 1px limegreen;
+      transition-property: border-color, transform, background-color;
+      transition-duration: 0.2s;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      vertical-align: middle;
+      margin: 0;
+      text-transform: inherit;
+      -webkit-tap-highlight-color: transparent;
+      transform: scale(0.93);
+    }
+}
