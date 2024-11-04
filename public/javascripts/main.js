@@ -59,6 +59,7 @@ function updateBoard(response) {
     const playerClass = currentPlayer === "B" ? "black" : "white";
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
+    $("#playerturn").text(currentPlayer === "B" ? "Player 1" : "Player 2");
 }
 
 function changeClickSound() {
