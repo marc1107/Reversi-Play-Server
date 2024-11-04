@@ -1,9 +1,8 @@
 .playerinfo {
   display: flex;
-  justify-content: space-between;
+  gap: 15px;
   align-items: center;
   margin-bottom: 10px;
-  width: 100%;
 }
 
 .playerturn {
@@ -19,6 +18,32 @@
 
   &.white {
     background-color: white;
+  }
+}
+
+.playername {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@media (max-width: 768px) {
+  .playerturn {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .playerturn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .playerturn {
+    width: 30px;
+    height: 30px;
   }
 }
 
