@@ -4,10 +4,31 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/landing.css")">
     @background()
 
+@*    <script>*@
+@*            document.addEventListener("DOMContentLoaded", function() {*@
+@*                // Referenzen auf die Input-Felder und die H2-Überschrift*@
+@*                const player1Input = document.getElementById("player1");*@
+@*                const player2Input = document.getElementById("player2");*@
+@*                const welcomeMessage = document.getElementById("welcome-message");*@
+
+@*                // Funktion zur Aktualisierung der Begrüßungsnachricht*@
+@*                function updateWelcomeMessage() {*@
+@*                    const player1Name = player1Input.value || "Spieler1"; // Fallback-Wert*@
+@*                    const player2Name = player2Input.value || "Spieler2"; // Fallback-Wert*@
+@*                    welcomeMessage.textContent = `Welcome ${player1Name} und ${player2Name}!`;*@
+@*                }*@
+
+@*                // Event-Listener für beide Input-Felder hinzufügen*@
+@*                player1Input.addEventListener("input", updateWelcomeMessage);*@
+@*                player2Input.addEventListener("input", updateWelcomeMessage);*@
+@*            });*@
+@*    </script>*@
+
     <div class="content">
         <div class="header-container">
             <h1>Reversi</h1>
         </div>
+        <h2 id="welcome-message">Welcome Spieler1 und Spieler2!</h2>
         <div class="landing-content">
             <div class="player-names">
                 <label for="player1">Player 1 Name:</label>
@@ -18,6 +39,34 @@
             </div>
             <a id="play-button" class="abutton" href="@routes.ReversiController.game()">Play!</a>
         </div>
+
+        <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const player1Input = document.getElementById("player1");
+                    const player2Input = document.getElementById("player2");
+                    const welcomeMessage = document.getElementById("welcome-message");
+                    const playButton = document.getElementById("play-button");
+
+                    // Aktualisiere die Begrüßungsnachricht in Echtzeit
+                    function updateWelcomeMessage() {
+                        const player1Name = player1Input.value || "Spieler1";
+                        const player2Name = player2Input.value || "Spieler2";
+                        welcomeMessage.textContent = `Welcome ${player1Name} und ${player2Name}!`;
+                    }
+
+                    // Event-Listener für die Eingabefelder
+                    player1Input.addEventListener("input", updateWelcomeMessage);
+                    player2Input.addEventListener("input", updateWelcomeMessage);
+
+                    // Speichere die Namen in localStorage beim Klicken auf den Button
+                    playButton.addEventListener("click", function(event) {
+                        event.preventDefault(); // Verhindert das Standardverhalten des Links
+                        localStorage.setItem("player1Name", player1Input.value);
+                        localStorage.setItem("player2Name", player2Input.value);
+                        window.location.href = playButton.href; // Navigiert zur nächsten Seite
+                    });
+                });
+        </script>
     </div>
     <div class="gamerules">
         <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>

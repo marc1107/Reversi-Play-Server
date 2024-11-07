@@ -6,13 +6,40 @@
 <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/playerturn.css")">
 
 <div class="playerinfo">
-    @if(playerState == B) {
-        <div id="playerturn1" class="playerturn black"></div>
-        <span id="playerturn" class="playername">Player 1</span>
-        <div id="playerturn2" class="playerturn black"></div>
-    } else {
-        <div id="playerturn1" class="playerturn white"></div>
-        <span id="playerturn" class="playername">Player 2</span>
-        <div id="playerturn2" class="playerturn white"></div>
-    }
+@if(playerState == B) {
+    <div id="playerturn1" class="playerturn black"></div>
+    <span id="playerturn" class="playername" data-player="1">Player 1</span>
+    <div id="playerturn2" class="playerturn black"></div>
+} else {
+    <div id="playerturn1" class="playerturn white"></div>
+    <span id="playerturn" class="playername" data-player="2">Player 2</span>
+    <div id="playerturn2" class="playerturn white"></div>
+}
 </div>
+
+<script>
+    function updatePlayerNames() {
+        // Spielername aus localStorage holen oder Fallback-Werte verwenden
+        const player1Name = localStorage.getItem("player1Name") || "Spieler1";
+        const player2Name = localStorage.getItem("player2Name") || "Spieler2";
+
+        // Alle Elemente mit der Klasse "playername" selektieren
+        const playerDisplays = document.querySelectorAll(".playername");
+
+        // Namen entsprechend dem data-player-Attribut aktualisieren
+        playerDisplays.forEach(playerDisplay => {
+            if (playerDisplay.getAttribute("data-player") === "1") {
+                playerDisplay.textContent = player1Name;
+                console.log("name1:", player1Name);
+            } else if (playerDisplay.getAttribute("data-player") === "2") {
+                playerDisplay.textContent = player2Name;
+                console.log("name2:", player2Name);
+            }
+        });
+    }
+
+    // Initiales Ausführen der Funktion bei Seitenladezeit
+    document.addEventListener("DOMContentLoaded", updatePlayerNames);
+
+    // Diese Funktion kann an anderen Stellen im Code aufgerufen werden, wenn der Bereich neu gerendert oder aktualisiert wird.
+</script>
