@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Zylinder anzeigen und auf den Mauszeiger positionieren
         dragPiece.style.display = "block";
         dragPiece.style.position = "fixed";
-        dragPiece.style.left = `${event.clientX}px`;
-        dragPiece.style.top = `${event.clientY}px`;
+        dragPiece.style.left = `${event.clientX-30}px`;
+        dragPiece.style.top = `${event.clientY-30}px`;
 
         // Starte das Verfolgen der Mausbewegungen
         document.addEventListener("mousemove", movePiece);
@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mausbewegungsfunktion, um den Zylinder der Maus folgen zu lassen
     function movePiece(event) {
         if (isDragging) {
-            dragPiece.style.left = `${event.clientX}px`;
-            dragPiece.style.top = `${event.clientY}px`;
+            dragPiece.style.left = `${event.clientX-30}px`;
+            dragPiece.style.top = `${event.clientY-30}px`;
         }
     }
 
