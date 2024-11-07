@@ -1,4 +1,23 @@
 let selectedSound = 'click-sound-click1';
+// let player1Name  = 'Spieler1';
+// let player2Name  = 'Spieler2';
+//
+//
+//
+// document.getElementById("play-button").addEventListener("click", function(event) {
+//     event.preventDefault(); // Prevent the default action (navigation)
+//     savePlayerNames(); // Call the function to save player names
+//     window.location.href = this.href; // Navigate to the game page
+// });
+//
+// function savePlayerNames() {
+//     // Your logic to save player names
+//     const player1Name = document.getElementById("player1").value;
+//     const player2Name = document.getElementById("player2").value;
+//     console.log("Player 1:", player1Name);
+//     console.log("Player 2:", player2Name);
+//     // Add your saving logic here
+// }
 
 function makeMove(row, col) {
     console.log("Move made at row: " + row + ", column: " + col);
@@ -56,6 +75,7 @@ function updateBoard(response) {
     playClickSound();
 
     // Update the current player display
+// Update the current player display
     const playerClass = currentPlayer === "B" ? "black" : "white";
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
