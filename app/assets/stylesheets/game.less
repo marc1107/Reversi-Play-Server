@@ -196,3 +196,15 @@ select:focus {
       transform: scale(0.93);
     }
 }
+
+.draggable-piece {
+  position: absolute;
+  width: 60px; /* Anpassbar */
+  height: 60px; /* Anpassbar */
+  border-radius: 50%;
+  background-color: black; /* Standardfarbe, wird durch JS geändert */
+  pointer-events: none;
+  display: none; /* Startet als unsichtbar */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
