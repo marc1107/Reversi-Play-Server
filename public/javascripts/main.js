@@ -1,5 +1,15 @@
 let selectedSound = 'click-sound-click1';
-
+let currentField = [
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "W", "B", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "B", "W", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
+        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"]
+    ];
+let currentPlayer = "B";
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -26,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = playButton.href; // Navigiert zur nächsten Seite
     });
 });
+
 function updatePlayerNames(currentPlayerState) {
     // Spielername aus localStorage holen oder Fallback-Werte verwenden
     const player1Name = localStorage.getItem("player1Name") || "Spieler1";
@@ -37,20 +48,107 @@ function updatePlayerNames(currentPlayerState) {
     // Aktualisiere den angezeigten Namen basierend auf dem aktuellen Spielerstatus
     if (currentPlayerState === "B") {
         playerDisplay.textContent = player1Name;
-        console.log("Aktueller Spieler:", player1Name);
     } else if (currentPlayerState === "W") {
         playerDisplay.textContent = player2Name;
-        console.log("Aktueller Spieler:", player2Name);
     }
 }
 
+function showHint(row, col) {
+    const hint = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
+    if (hint.find('.stone').length !== 0) {
+        return;
+
+    }
+
+    hideAllHints();
+
+    const possible = isMovePossible(row, col);
+    // 1 = move is possible
+    // 0 = move is not possible
+    // -1 = cell is not empty
+    if (possible === 1) {
+        console.log("showHint", row, col, "possible");
+
+        if (hint.html().trim() === "&nbsp;") {
+            hint.html('');  // Clear the cell content
+        }
+
+        if (hint.find('.stone').length === 0) {
+            const stoneDiv = currentPlayer === "B"
+                ? $('<div class="stone black hint"></div>')
+                : $('<div class="stone white hint"></div>');
+
+            // Append stone div to td
+            hint.html(stoneDiv);
+
+            // Bind click event to makeMove function
+            stoneDiv.on('click', function() {
+                makeMove(row + 1, col + 1);
+            });
+        }
+    } else if (possible === 0) {
+        hint.html('<div></div>');
+    }
+}
+
+function hideAllHints() {
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            if (currentField[row][col] !== "EMPTY") {
+                continue;
+            }
+            const hint = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
+            hint.html('<div></div>');
+        }
+    }
+}
+
+function isMovePossible(row, col) {
+    if (currentField[row][col] !== "EMPTY") {
+        return -1;
+    }
+
+    const directions = [
+        [-1, 0], [1, 0], // vertical
+        [0, -1], [0, 1], // horizontal
+        [-1, -1], [1, 1], // diagonal
+        [-1, 1], [1, -1]  // anti-diagonal
+    ];
+
+    const opponent = currentPlayer === "B" ? "W" : "B";
+
+    for (let [dx, dy] of directions) {
+        let x = row + dx;
+        let y = col + dy;
+        let foundOpponent = false;
+
+        while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            if (currentField[x][y] === opponent) {
+                foundOpponent = true;
+            } else if (currentField[x][y] === currentPlayer) {
+                if (foundOpponent) {
+                    return 1;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+            x += dx;
+            y += dy;
+        }
+    }
+
+    return 0;
+}
 
 function makeMove(row, col) {
-    console.log("Move made at row: " + row + ", column: " + col);
     $.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
         success: function(response) {
+            currentField = response.newBoard.cells;
+            currentPlayer = response.newBoard.playerState;
             updateBoard(response);
         },
         error: function(xhr, status, error) {
