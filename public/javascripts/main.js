@@ -81,3 +81,70 @@ function playButtonClickSound() {
     const clickSound = document.getElementById('button-click-sound');
     clickSound.play();
 }
+
+// DragDrop
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialisierung der Variablen
+    const playerInfo = document.querySelector(".playerinfo");
+    const dragPiece = document.getElementById("drag-piece");
+    let isDragging = false; // Status, ob das Dragging aktiv ist oder nicht
+
+    // Funktion zum Anzeigen des Zylinders und Starten des Dragging
+    playerInfo.addEventListener("mousedown", function (event) {
+        event.preventDefault(); // Verhindert das Markieren von Inhalten
+        isDragging = true; // Aktiviert das Dragging
+
+        // Setze die Farbe des Zylinders basierend auf playerState
+        if (playerInfo.querySelector(".black")) {
+            dragPiece.style.backgroundColor = "black";
+        } else {
+            dragPiece.style.backgroundColor = "white";
+        }
+
+        // Zylinder anzeigen und auf den Mauszeiger positionieren
+        dragPiece.style.display = "block";
+        dragPiece.style.position = "fixed";
+        dragPiece.style.left = `${event.clientX}px`;
+        dragPiece.style.top = `${event.clientY}px`;
+
+        // Starte das Verfolgen der Mausbewegungen
+        document.addEventListener("mousemove", movePiece);
+    });
+
+    // Mausbewegungsfunktion, um den Zylinder der Maus folgen zu lassen
+    function movePiece(event) {
+        if (isDragging) {
+            dragPiece.style.left = `${event.clientX}px`;
+            dragPiece.style.top = `${event.clientY}px`;
+        }
+    }
+
+    // Versteckt den Zylinder und beendet das Dragging, wenn die Maustaste losgelassen wird
+    document.addEventListener("mouseup", function () {
+        if (isDragging) {
+            dragPiece.style.display = "none";
+            document.removeEventListener("mousemove", movePiece);
+            isDragging = false; // Deaktiviert das Dragging
+        }
+    });
+
+    // Hole alle <td>-Elemente und füge den mouseup-Event-Listener hinzu
+    const cells = document.querySelectorAll("td[data-row][data-cell]");
+    cells.forEach(cell => {
+        cell.addEventListener("mouseup", function () {
+            // Wenn gerade gezogen wird (Zylinder sichtbar), rufe makeMove auf
+            if (isDragging) {
+                const row = cell.getAttribute("data-row");
+                const col = cell.getAttribute("data-cell");
+                makeMove(row, col);
+            }
+        });
+    });
+});
+
+// Die makeMove-Funktion
+// function makeMove(row, col) {
+//     console.log("Move made at row:", row, "col:", col);
+//     // Hier kannst du die Logik für einen Zug hinzufügen
+// }
