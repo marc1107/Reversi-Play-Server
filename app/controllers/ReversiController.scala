@@ -35,6 +35,8 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     Ok(views.html.index())
   }
 
+
+
   def game(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     print(gameController.toString)
     Ok(views.html.game(gameController.field, gameController.playerState.getStone))

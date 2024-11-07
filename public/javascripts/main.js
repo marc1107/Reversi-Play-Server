@@ -1,5 +1,50 @@
 let selectedSound = 'click-sound-click1';
 
+
+document.addEventListener("DOMContentLoaded", function() {
+    const player1Input = document.getElementById("player1");
+    const player2Input = document.getElementById("player2");
+    const welcomeMessage = document.getElementById("welcome-message");
+    const playButton = document.getElementById("play-button");
+
+    // Aktualisiere die Begrüßungsnachricht in Echtzeit
+    function updateWelcomeMessage() {
+        const player1Name = player1Input.value || "Spieler1";
+        const player2Name = player2Input.value || "Spieler2";
+        welcomeMessage.textContent = `Welcome ${player1Name} und ${player2Name}!`;
+    }
+
+    // Event-Listener für die Eingabefelder
+    player1Input.addEventListener("input", updateWelcomeMessage);
+    player2Input.addEventListener("input", updateWelcomeMessage);
+
+    // Speichere die Namen in localStorage beim Klicken auf den Button
+    playButton.addEventListener("click", function(event) {
+        event.preventDefault(); // Verhindert das Standardverhalten des Links
+        localStorage.setItem("player1Name", player1Input.value);
+        localStorage.setItem("player2Name", player2Input.value);
+        window.location.href = playButton.href; // Navigiert zur nächsten Seite
+    });
+});
+function updatePlayerNames(currentPlayerState) {
+    // Spielername aus localStorage holen oder Fallback-Werte verwenden
+    const player1Name = localStorage.getItem("player1Name") || "Spieler1";
+    const player2Name = localStorage.getItem("player2Name") || "Spieler2";
+
+    // Element für die aktuelle Spieleranzeige finden
+    const playerDisplay = document.getElementById("playerturn");
+
+    // Aktualisiere den angezeigten Namen basierend auf dem aktuellen Spielerstatus
+    if (currentPlayerState === "B") {
+        playerDisplay.textContent = player1Name;
+        console.log("Aktueller Spieler:", player1Name);
+    } else if (currentPlayerState === "W") {
+        playerDisplay.textContent = player2Name;
+        console.log("Aktueller Spieler:", player2Name);
+    }
+}
+
+
 function makeMove(row, col) {
     console.log("Move made at row: " + row + ", column: " + col);
     $.ajax({
@@ -60,6 +105,7 @@ function updateBoard(response) {
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
     $("#playerturn").text(currentPlayer === "B" ? "Player 1" : "Player 2");
+    updatePlayerNames(currentPlayer);
 }
 
 function changeClickSound() {
