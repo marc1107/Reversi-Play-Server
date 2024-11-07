@@ -23,8 +23,8 @@ object BoardHelper {
           case (Stone.B, _) => "<div class='stone black'></div>"
           case (Stone.Empty, _) => "&nbsp;"
         }
-        s"""<td data-row="${row+1}" data-cell="${cell+1}">$content</td>"""
-//      s"""<td data-row="${row+1}" data-cell="${cell+1}" mouseup="makeMove(${row+1}, ${cell+1})">$content</td>"""
+        //s"""<td data-row="${row+1}" data-cell="${cell+1}">$content</td>"""
+        s"""<td data-row="${row+1}" data-cell="${cell+1}" onclick="makeMove(${row+1}, ${cell+1})">$content</td>"""
       }
       s"<tr>${rowContent.mkString}</tr>"
     }

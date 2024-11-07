@@ -83,17 +83,14 @@ function playButtonClickSound() {
 }
 
 // DragDrop
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialisierung der Variablen
     const playerInfo = document.querySelector(".playerinfo");
     const dragPiece = document.getElementById("drag-piece");
     let isDragging = false; // Status, ob das Dragging aktiv ist oder nicht
 
-    // Funktion zum Anzeigen des Zylinders und Starten des Dragging
     playerInfo.addEventListener("mousedown", function (event) {
-        event.preventDefault(); // Verhindert das Markieren von Inhalten
-        isDragging = true; // Aktiviert das Dragging
+        event.preventDefault();
+        isDragging = true;
 
         // Setze die Farbe des Zylinders basierend auf playerState
         if (playerInfo.querySelector(".black")) {
@@ -125,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isDragging) {
             dragPiece.style.display = "none";
             document.removeEventListener("mousemove", movePiece);
-            isDragging = false; // Deaktiviert das Dragging
+            isDragging = false;
         }
     });
 
@@ -142,9 +139,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-// Die makeMove-Funktion
-// function makeMove(row, col) {
-//     console.log("Move made at row:", row, "col:", col);
-//     // Hier kannst du die Logik für einen Zug hinzufügen
-// }
