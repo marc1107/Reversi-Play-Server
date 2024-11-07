@@ -101,7 +101,6 @@ function updateBoard(response) {
     playClickSound();
 
     // Update the current player display
-// Update the current player display
     const playerClass = currentPlayer === "B" ? "black" : "white";
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
@@ -130,17 +129,14 @@ function playButtonClickSound() {
 }
 
 // DragDrop
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialisierung der Variablen
     const playerInfo = document.querySelector(".playerinfo");
     const dragPiece = document.getElementById("drag-piece");
     let isDragging = false; // Status, ob das Dragging aktiv ist oder nicht
 
-    // Funktion zum Anzeigen des Zylinders und Starten des Dragging
     playerInfo.addEventListener("mousedown", function (event) {
-        event.preventDefault(); // Verhindert das Markieren von Inhalten
-        isDragging = true; // Aktiviert das Dragging
+        event.preventDefault();
+        isDragging = true;
 
         // Setze die Farbe des Zylinders basierend auf playerState
         if (playerInfo.querySelector(".black")) {
@@ -152,8 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Zylinder anzeigen und auf den Mauszeiger positionieren
         dragPiece.style.display = "block";
         dragPiece.style.position = "fixed";
-        dragPiece.style.left = `${event.clientX}px`;
-        dragPiece.style.top = `${event.clientY}px`;
+        dragPiece.style.left = `${event.clientX-30}px`;
+        dragPiece.style.top = `${event.clientY-30}px`;
 
         // Starte das Verfolgen der Mausbewegungen
         document.addEventListener("mousemove", movePiece);
@@ -162,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mausbewegungsfunktion, um den Zylinder der Maus folgen zu lassen
     function movePiece(event) {
         if (isDragging) {
-            dragPiece.style.left = `${event.clientX}px`;
-            dragPiece.style.top = `${event.clientY}px`;
+            dragPiece.style.left = `${event.clientX-30}px`;
+            dragPiece.style.top = `${event.clientY-30}px`;
         }
     }
 
@@ -172,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isDragging) {
             dragPiece.style.display = "none";
             document.removeEventListener("mousemove", movePiece);
-            isDragging = false; // Deaktiviert das Dragging
+            isDragging = false;
         }
     });
 
@@ -189,4 +185,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
