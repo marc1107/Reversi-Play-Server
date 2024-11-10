@@ -209,6 +209,7 @@ function updateBoard(response) {
 
     if (!changed) {
         playErrorSound();
+        showAllowedHints();
         return;
     }
 
