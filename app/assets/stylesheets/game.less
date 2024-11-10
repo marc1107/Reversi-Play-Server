@@ -19,8 +19,8 @@
   cursor: pointer;
   font-size: 2em;
   border: 2px solid gainsboro;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   text-align: center;
   vertical-align: middle;
   background-color: rgba(0, 150, 0, 0.6);
@@ -80,8 +80,16 @@
   background-color: white;
 }
 
+.stone.white.hint {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .stone.black {
   background-color: black;
+}
+
+.stone.black.hint {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 select {
@@ -196,3 +204,15 @@ select:focus {
       transform: scale(0.93);
     }
 }
+
+.draggable-piece {
+  position: absolute;
+  width: 60px; /* Anpassbar */
+  height: 60px; /* Anpassbar */
+  border-radius: 50%;
+  background-color: black; /* Standardfarbe, wird durch JS geändert */
+  pointer-events: none;
+  display: none; /* Startet als unsichtbar */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+

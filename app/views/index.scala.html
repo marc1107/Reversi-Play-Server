@@ -2,16 +2,29 @@
 
 @main("Welcome to Reversi") {
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/landing.css")">
+    <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
+
     @background()
 
     <div class="content">
         <div class="header-container">
             <h1>Reversi</h1>
         </div>
-
+        <h2 id="welcome-message">Welcome Spieler1 und Spieler2!</h2>
         <div class="landing-content">
-            <a class="abutton" href="@routes.ReversiController.game()">Play!</a>
+            <div class="player-names">
+                <label for="player1">Player 1 Name:</label>
+                <input type="text" id="player1" value="Spieler1">
+
+                <label for="player2">Player 2 Name:</label>
+                <input type="text" id="player2" value="Spieler2">
+            </div>
+            <a id="play-button" class="abutton" href="@routes.ReversiController.game()">Play!</a>
         </div>
+
+        <script>
+
+        </script>
     </div>
     <div class="gamerules">
         <a class="abutton" href="@routes.ReversiController.rules()">View Game Rules</a>

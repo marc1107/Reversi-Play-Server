@@ -1,12 +1,31 @@
 .landing-content {
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vh;
+  align-items: center; /* Zentriert die Elemente */
+
 
   .abutton {
     border: 3px solid green;
   }
+}
+
+
+.player-names {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; /* Abstand zum Button */
+}
+
+.player-names label,
+.player-names input {
+  margin-bottom: 10px; /* Abstand zwischen den Labeln und Eingaben */
+}
+
+#play-button {
+  margin-top: 10px; /* Abstand über dem Button */
 }
