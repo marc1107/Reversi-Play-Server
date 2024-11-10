@@ -10,6 +10,7 @@ let currentField = [
         ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"]
     ];
 let currentPlayer = "B";
+let hintsLevel = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -53,22 +54,37 @@ function updatePlayerNames(currentPlayerState) {
     }
 }
 
-function showHint(row, col) {
-    const hint = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
-    if (hint.find('.stone').length !== 0) {
+function showAllowedHints() {
+    if (hintsLevel !== 2)
         return;
 
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            showHint(row, col);
+        }
+    }
+}
+
+function showHintFor(row, col) {
+    if (hintsLevel === 1)
+        showHint(row, col);
+}
+
+function showHint(row, col) {
+    const hint = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
+
+    if (hint.find('.stone').length !== 0) {
+        return;
     }
 
-    hideAllHints();
+    if (hintsLevel === 1)
+        hideAllHints();
 
     const possible = isMovePossible(row, col);
     // 1 = move is possible
     // 0 = move is not possible
     // -1 = cell is not empty
     if (possible === 1) {
-        console.log("showHint", row, col, "possible");
-
         if (hint.html().trim() === "&nbsp;") {
             hint.html('');  // Clear the cell content
         }
@@ -204,6 +220,7 @@ function updateBoard(response) {
     $("#playerturn2").attr("class", `playerturn ${playerClass}`);
     $("#playerturn").text(currentPlayer === "B" ? "Player 1" : "Player 2");
     updatePlayerNames(currentPlayer);
+    showAllowedHints();
 }
 
 function changeClickSound() {
