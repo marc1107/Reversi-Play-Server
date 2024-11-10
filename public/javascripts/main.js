@@ -184,7 +184,7 @@ function updateBoard(response) {
             } else if (newStone === "W") {
                 content = "<div class='stone white'></div>";
             } else {
-                content = "&nbsp;";
+                content = "<div></div>";
             }
 
             cell.html(content);
