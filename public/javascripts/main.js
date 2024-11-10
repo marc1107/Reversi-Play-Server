@@ -223,6 +223,13 @@ function updateBoard(response) {
     showAllowedHints();
 }
 
+function changeHintsLevel() {
+    const selectedValue = document.getElementById('hint-select').value;
+    hintsLevel = parseInt(selectedValue);
+    hideAllHints();
+    showAllowedHints();
+}
+
 function changeClickSound() {
     const selectedValue = document.getElementById('sound-select').value;
     selectedSound = 'click-sound-' + selectedValue;

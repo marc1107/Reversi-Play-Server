@@ -34,6 +34,14 @@
                         <option value="click3">Laser 1</option>
                     </select>
                 </div>
+                <div class="col-12 text-center mt-2">
+                    <label for="hint-select">Tipps:</label>
+                    <select id="hint-select" class="hint-select" onchange="changeHintsLevel()">
+                        <option value="0">Keine</option>
+                        <option value="1" selected>Beim Hovern</option>
+                        <option value="2">Alle möglichen Moves</option>
+                    </select>
+                </div>
             }
             <div class="gamerules-small">
                 <a class="abutton .responsive-button" href="@routes.ReversiController.rules()">Rules</a>
