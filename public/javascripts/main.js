@@ -1,7 +1,7 @@
 let selectedSound = 'click-sound-click1';
 let currentField;
 let currentPlayer;
-let hintsLevel = 1;
+let hintsLevel;
 var websocket;
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -337,6 +337,7 @@ function getField() {
 }
 
 $( document ).ready(function() {
+    hintsLevel = 0;
     getField();
     connectWebSocket()
 });

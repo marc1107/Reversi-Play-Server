@@ -139,20 +139,21 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
 
   def socket = WebSocket.accept[String, String] { request =>
+    val session = request.session
     ActorFlow.actorRef { out =>
       println("Connect received")
-      ReversiWebSocketActorFactory.create(out)
+      ReversiWebSocketActorFactory.create(out, session)
     }
   }
 
   object ReversiWebSocketActorFactory {
-    def create(out: ActorRef): Props = {
+    def create(out: ActorRef, session: Session): Props = {
       GameState.addConnection(out)
-      Props(new ReversiWebSocketActor(out))
+      Props(new ReversiWebSocketActor(out, session))
     }
   }
 
-  class ReversiWebSocketActor(out: ActorRef) extends Actor {
+  class ReversiWebSocketActor(out: ActorRef, session: Session) extends Actor {
 
     def receive = {
       case msg: String =>
@@ -160,8 +161,21 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
         val json = Json.parse(msg)
         val row = (json \ "row").as[Int]
         val col = (json \ "col").as[Int]
-        doMove(row, col)
-        GameState.broadcast(fieldToJson(gameController.field).toString)
+
+        // Check if the current player is either player_1 or player_2
+        val currentPlayer = session.get("player").getOrElse("")
+        if (currentPlayer != "player_1" && currentPlayer != "player_2" || !GameState.isPlayerTurn(currentPlayer)) {
+          println("It's not " + currentPlayer + "'s turn")
+        } else {
+          doMove(row, col)
+
+          gameController.playerState.getStone match {
+            case Stone.B => GameState.switchTurn("player_1")
+            case Stone.W => GameState.switchTurn("player_2")
+            case _ => println("Invalid player state")
+          }
+          GameState.broadcast(fieldToJson(gameController.field).toString)
+        }
     }
   }
 }
