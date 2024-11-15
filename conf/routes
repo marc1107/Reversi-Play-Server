@@ -11,6 +11,7 @@ GET     /game                       controllers.ReversiController.game()
 GET     /move                       controllers.ReversiController.makeMoveQuery()
 GET     /rules                      controllers.ReversiController.rules()
 GET     /makeMoveAjax/:row/:col     controllers.ReversiController.makeMoveAjax(row: Int, col: Int)
+GET     /websocket                  controllers.ReversiController.socket
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

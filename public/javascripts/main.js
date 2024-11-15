@@ -11,6 +11,7 @@ let currentField = [
     ];
 let currentPlayer = "B";
 let hintsLevel = 1;
+var websocket;
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -96,11 +97,6 @@ function showHint(row, col) {
 
             // Append stone div to td
             hint.html(stoneDiv);
-
-            // Bind click event to makeMove function
-            stoneDiv.on('click', function() {
-                makeMove(row + 1, col + 1);
-            });
         }
     } else if (possible === 0) {
         hint.html('<div></div>');
@@ -159,25 +155,24 @@ function isMovePossible(row, col) {
 }
 
 function makeMove(row, col) {
-    $.ajax({
+    websocket.send(JSON.stringify({row: row, col: col}));
+
+    /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
         success: function(response) {
-            currentField = response.newBoard.cells;
-            currentPlayer = response.newBoard.playerState;
-            updateBoard(response);
+            updateBoard(response.newBoard);
         },
         error: function(xhr, status, error) {
             console.error("Error making move:", error);
         }
-    });
+    });*/
 }
 
-function updateBoard(response) {
-    const oldBoard = response.oldBoard.cells;
-    const updatedBoard = response.newBoard.cells;
-    const size = response.newBoard.size;
-    const currentPlayer = response.newBoard.playerState;
+function updateBoard(newBoard) {
+    const updatedBoard = newBoard.cells;
+    const size = newBoard.size;
+    currentPlayer = newBoard.playerState;
 
     let changed = false;
 
@@ -185,7 +180,7 @@ function updateBoard(response) {
     for (let row = 0; row < size; row++) {
         for (let col = 0; col < size; col++) {
             const cell = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
-            const oldStone = oldBoard[row][col];
+            const oldStone = currentField[row][col];
             const newStone = updatedBoard[row][col];
             let content;
 
@@ -206,6 +201,8 @@ function updateBoard(response) {
             cell.html(content);
         }
     }
+
+    currentField = updatedBoard;
 
     if (!changed) {
         playErrorSound();
@@ -229,6 +226,31 @@ function changeHintsLevel() {
     hintsLevel = parseInt(selectedValue);
     hideAllHints();
     showAllowedHints();
+}
+
+function connectWebSocket() {
+    websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout
+
+    websocket.onopen = function(event) {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        if (typeof e.data === "string") {
+            let newBoard = JSON.parse(e.data);
+            updateBoard(newBoard);
+        }
+
+    };
 }
 
 function changeClickSound() {
@@ -307,4 +329,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+});
+
+$( document ).ready(function() {
+    connectWebSocket()
 });
