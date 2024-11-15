@@ -1,15 +1,6 @@
 let selectedSound = 'click-sound-click1';
-let currentField = [
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "W", "B", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "B", "W", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"]
-    ];
-let currentPlayer = "B";
+let currentField;
+let currentPlayer;
 let hintsLevel = 1;
 var websocket;
 
@@ -331,6 +322,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function getField() {
+    $.ajax({
+        url: '/getField',
+        method: 'GET',
+        success: function(response) {
+            currentField = response.newBoard.cells;
+            updateBoard(response.newBoard);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error getting field:", error);
+        }
+    });
+}
+
 $( document ).ready(function() {
+    getField();
     connectWebSocket()
 });

@@ -9,8 +9,7 @@ import org.apache.pekko.actor.{Actor, ActorRef, ActorSystem, Props}
 import org.apache.pekko.stream.Materializer
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
-
-import scala.swing.Reactor
+import utils.GameState
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -36,13 +35,47 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
   }
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+    if (GameState.isGameFull) {
+      println("Game is full")
+      Forbidden("The game already has two players.")
+    } else if (GameState.connectedPlayers.isEmpty) {
+      println("No players connected")
+      Ok(views.html.index())
+    } else {
+      println("Player connected")
+      Redirect(routes.ReversiController.joinGame())
+    }
   }
 
+  def joinGame(): Action[AnyContent] = Action { implicit request =>
+    val session = request.session
 
+    // Check if the player already has a session
+    val playerSession = session.get("player")
+
+    playerSession match {
+      case Some(player) =>
+        if (!GameState.connectedPlayers.contains(player)) {
+          GameState.addPlayer(player)
+        }
+        // Player is reconnecting, just return them to the game
+        Ok(views.html.game(gameController.field, gameController.playerState.getStone))
+          .withSession(session + ("player" -> player))
+
+      case None =>
+        // Assign a new session based on how many players are currently in the game
+        val newPlayerId = if (GameState.connectedPlayers.isEmpty) "player_1" else "player_2"
+
+        if (GameState.addPlayer(newPlayerId)) {
+          Ok(views.html.game(gameController.field, gameController.playerState.getStone))
+            .withSession(request.session + ("player" -> newPlayerId))
+        } else {
+          Forbidden("The game already has two players.")
+        }
+    }
+  }
 
   def game(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    print(gameController.toString)
     Ok(views.html.game(gameController.field, gameController.playerState.getStone))
   }
 
@@ -69,11 +102,18 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     val oldBoardJson = fieldToJson(oldBoard)
     doMove(row, col)
     val updatedBoard = gameController.field
-    println("Updated board: " + updatedBoard.toString)
     val boardJson = fieldToJson(updatedBoard)
     val response = Json.obj(
       "oldBoard" -> oldBoardJson,
       "newBoard" -> boardJson
+    )
+    Ok(response)
+  }
+
+  def getField(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val field = gameController.field
+    val response = Json.obj(
+      "newBoard" -> fieldToJson(field)
     )
     Ok(response)
   }
@@ -107,11 +147,12 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
   object ReversiWebSocketActorFactory {
     def create(out: ActorRef): Props = {
+      GameState.addConnection(out)
       Props(new ReversiWebSocketActor(out))
     }
   }
 
-  class ReversiWebSocketActor(out: ActorRef) extends Actor with Reactor {
+  class ReversiWebSocketActor(out: ActorRef) extends Actor {
 
     def receive = {
       case msg: String =>
@@ -120,7 +161,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
         val row = (json \ "row").as[Int]
         val col = (json \ "col").as[Int]
         doMove(row, col)
-        out ! fieldToJson(gameController.field).toString
+        GameState.broadcast(fieldToJson(gameController.field).toString)
     }
   }
 }
