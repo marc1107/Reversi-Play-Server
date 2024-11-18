@@ -1,9 +1,9 @@
 package utils
 
-import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 object ChatStorage {
-  private val messages = mutable.ListBuffer[String]()
+  val messages = ListBuffer[String]()
 
   def addMessage(message: String): Unit = messages += message
 

@@ -9,7 +9,7 @@ import org.apache.pekko.actor.{Actor, ActorRef, ActorSystem, Props}
 import org.apache.pekko.stream.Materializer
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
-import utils.GameState
+import utils.{ChatStorage, GameState}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -135,6 +135,19 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     fieldJson
   }
 
+  def getPlayerNames: Action[AnyContent] = Action {
+    val playerNames = Json.obj(
+      "player1Name" -> GameState.playerNames("player_1"),
+      "player2Name" -> GameState.playerNames("player_2")
+    )
+    Ok(playerNames)
+  }
+
+  def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action {
+    GameState.changePlayerNames(player1, player2)
+    Ok("Player names changed")
+  }
+
   private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 
 
@@ -168,6 +181,9 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
           println("It's not " + currentPlayer + "'s turn")
         } else {
           doMove(row, col)
+
+          // message: ${playerName} hat einen Zug auf [${row}, ${col}] gemacht.
+          ChatStorage.addMessage(GameState.playerNames(currentPlayer) + " hat einen Zug auf [" + row + ", " + col + "] gemacht.")
 
           gameController.playerState.getStone match {
             case Stone.B => GameState.switchTurn("player_1")

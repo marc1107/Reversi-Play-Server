@@ -3,6 +3,9 @@ let currentField;
 let currentPlayer;
 let hintsLevel;
 var websocket;
+var tempRow;
+var tempCol;
+var tempPlayer;
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -26,9 +29,36 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // Verhindert das Standardverhalten des Links
         localStorage.setItem("player1Name", player1Input.value);
         localStorage.setItem("player2Name", player2Input.value);
+
+        $.ajax({
+            url: `/playerNames/${player1Input.value}/${player2Input.value}`,
+            method: 'GET',
+            contentType: 'application/json',
+            error: function(xhr, status, error) {
+                console.error('Error updating player names:', error);
+            }
+        })
+
         window.location.href = playButton.href; // Navigiert zur nächsten Seite
     });
 });
+
+function getPlayerNames() {
+    $.ajax({
+        url: '/playerNames',
+        method: 'GET',
+        success: function(response) {
+            const player1Name = response.player1Name;
+            const player2Name = response.player2Name;
+            localStorage.setItem("player1Name", player1Name);
+            localStorage.setItem("player2Name", player2Name);
+            updatePlayerNames(currentPlayer);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error getting player names:', error);
+        }
+    });
+}
 
 function updatePlayerNames(currentPlayerState) {
     // Spielername aus localStorage holen oder Fallback-Werte verwenden
@@ -147,8 +177,8 @@ function isMovePossible(row, col) {
 
 function makeMove(row, col) {
     websocket.send(JSON.stringify({row: row, col: col}));
-    logMoveInChat(row, col);
-
+    tempRow = row;
+    tempCol = col;
     /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
@@ -164,6 +194,7 @@ function makeMove(row, col) {
 function updateBoard(newBoard) {
     const updatedBoard = newBoard.cells;
     const size = newBoard.size;
+    tempPlayer = currentPlayer;
     currentPlayer = newBoard.playerState;
 
     let changed = false;
@@ -204,6 +235,7 @@ function updateBoard(newBoard) {
 
     playClickSound();
 
+
     // Update the current player display
     const playerClass = currentPlayer === "B" ? "black" : "white";
     $("#playerturn1").attr("class", `playerturn ${playerClass}`);
@@ -221,8 +253,10 @@ function changeHintsLevel() {
 }
 
 function connectWebSocket() {
-    websocket = new WebSocket("ws://localhost:9000/websocket");
-    websocket.setTimeout
+    const baseUrl = window.location.origin.replace(/^http/, 'ws');
+    const websocketServerUrl = `${baseUrl}/websocket`;
+    websocket = new WebSocket(websocketServerUrl);
+    websocket.setTimeout;
 
     websocket.onopen = function() {
         console.log("Connected to Websocket");
@@ -337,20 +371,13 @@ function getField() {
     });
 }
 
-$( document ).ready(function() {
-    hintsLevel = 0;
-    getField();
-    connectWebSocket()
-});
-
-
 // Code für den chat
 
 // Holt den Namen des aktuellen Spielers aus localStorage
 function getCurrentPlayerName() {
     const player1Name = localStorage.getItem("player1Name") || "Spieler1";
     const player2Name = localStorage.getItem("player2Name") || "Spieler2";
-    return currentPlayer === "B" ? player1Name : player2Name;
+    return tempPlayer === "B" ? player1Name : player2Name;
 }
 
 // Long Polling für den Empfang von Nachrichten
@@ -383,7 +410,7 @@ function pollMessages() {
             console.error('Fehler beim Abrufen der Nachrichten:', error);
         },
         complete: function() {
-            setTimeout(pollMessages, 3000); // Polling alle 3 Sekunden
+            setTimeout(pollMessages, 300);
         }
     });
 }
@@ -413,23 +440,6 @@ function sendMessage() {
     });
 }
 
-// Zeigt Spielzüge im Chat
-function logMoveInChat(row, col) {
-    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
-    const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
-
-    $.ajax({
-        url: '/chat/send',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ message: moveMessage }),
-        error: function(xhr, status, error) {
-            console.error('Fehler beim Protokollieren des Zuges:', error);
-        }
-    });
-}
-
-
 // Eingaben sanitieren (sichert gegen XSS)
 function sanitizeInput(input) {
     const div = document.createElement('div');
@@ -439,3 +449,10 @@ function sanitizeInput(input) {
 
 // Long Polling starten
 pollMessages();
+
+$( document ).ready(function() {
+    hintsLevel = 0;
+    getPlayerNames();
+    getField();
+    connectWebSocket()
+});
