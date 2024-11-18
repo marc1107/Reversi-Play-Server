@@ -1,16 +1,8 @@
 let selectedSound = 'click-sound-click1';
-let currentField = [
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "W", "B", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "B", "W", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"],
-        ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"]
-    ];
-let currentPlayer = "B";
-let hintsLevel = 1;
+let currentField;
+let currentPlayer;
+let hintsLevel;
+var websocket;
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -96,11 +88,6 @@ function showHint(row, col) {
 
             // Append stone div to td
             hint.html(stoneDiv);
-
-            // Bind click event to makeMove function
-            stoneDiv.on('click', function() {
-                makeMove(row + 1, col + 1);
-            });
         }
     } else if (possible === 0) {
         hint.html('<div></div>');
@@ -159,25 +146,25 @@ function isMovePossible(row, col) {
 }
 
 function makeMove(row, col) {
-    $.ajax({
+    websocket.send(JSON.stringify({row: row, col: col}));
+    logMoveInChat(row, col);
+
+    /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
         success: function(response) {
-            currentField = response.newBoard.cells;
-            currentPlayer = response.newBoard.playerState;
-            updateBoard(response);
+            updateBoard(response.newBoard);
         },
         error: function(xhr, status, error) {
             console.error("Error making move:", error);
         }
-    });
+    });*/
 }
 
-function updateBoard(response) {
-    const oldBoard = response.oldBoard.cells;
-    const updatedBoard = response.newBoard.cells;
-    const size = response.newBoard.size;
-    const currentPlayer = response.newBoard.playerState;
+function updateBoard(newBoard) {
+    const updatedBoard = newBoard.cells;
+    const size = newBoard.size;
+    currentPlayer = newBoard.playerState;
 
     let changed = false;
 
@@ -185,7 +172,7 @@ function updateBoard(response) {
     for (let row = 0; row < size; row++) {
         for (let col = 0; col < size; col++) {
             const cell = $(`td[data-row='${row + 1}'][data-cell='${col + 1}']`);
-            const oldStone = oldBoard[row][col];
+            const oldStone = currentField[row][col];
             const newStone = updatedBoard[row][col];
             let content;
 
@@ -206,6 +193,8 @@ function updateBoard(response) {
             cell.html(content);
         }
     }
+
+    currentField = updatedBoard;
 
     if (!changed) {
         playErrorSound();
@@ -229,6 +218,31 @@ function changeHintsLevel() {
     hintsLevel = parseInt(selectedValue);
     hideAllHints();
     showAllowedHints();
+}
+
+function connectWebSocket() {
+    websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout
+
+    websocket.onopen = function() {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        if (typeof e.data === "string") {
+            let newBoard = JSON.parse(e.data);
+            updateBoard(newBoard);
+        }
+
+    };
 }
 
 function changeClickSound() {
@@ -308,3 +322,120 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function getField() {
+    $.ajax({
+        url: '/getField',
+        method: 'GET',
+        success: function(response) {
+            currentField = response.newBoard.cells;
+            updateBoard(response.newBoard);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error getting field:", error);
+        }
+    });
+}
+
+$( document ).ready(function() {
+    hintsLevel = 0;
+    getField();
+    connectWebSocket()
+});
+
+
+// Code für den chat
+
+// Holt den Namen des aktuellen Spielers aus localStorage
+function getCurrentPlayerName() {
+    const player1Name = localStorage.getItem("player1Name") || "Spieler1";
+    const player2Name = localStorage.getItem("player2Name") || "Spieler2";
+    return currentPlayer === "B" ? player1Name : player2Name;
+}
+
+// Long Polling für den Empfang von Nachrichten
+function pollMessages() {
+    $.ajax({
+        url: '/chat/messages',
+        method: 'GET',
+        success: function(messages) {
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = ''; // Vorherige Nachrichten löschen
+
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+
+                // Prüfen, ob die Nachricht ein Spielzug ist
+                if (message.includes('hat einen Zug auf')) {
+                    messageElement.className = 'move'; // Klasse für Spielzug
+                } else {
+                    messageElement.className = 'message'; // Klasse für normale Nachricht
+                }
+
+                messageElement.textContent = message;
+                chatMessages.appendChild(messageElement);
+            });
+
+            // Automatisch nach unten scrollen
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Abrufen der Nachrichten:', error);
+        },
+        complete: function() {
+            setTimeout(pollMessages, 3000); // Polling alle 3 Sekunden
+        }
+    });
+}
+
+
+// Nachrichten senden mit aktuellem Spieler
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+
+    if (!message) return; // Leere Nachrichten ignorieren
+
+    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
+    const fullMessage = `${playerName}: ${sanitizeInput(message)}`; // Nachricht mit Spielername
+
+    $.ajax({
+        url: '/chat/send',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: fullMessage }),
+        success: function() {
+            input.value = ''; // Eingabefeld leeren
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Senden der Nachricht:', error);
+        }
+    });
+}
+
+// Zeigt Spielzüge im Chat
+function logMoveInChat(row, col) {
+    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
+    const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
+
+    $.ajax({
+        url: '/chat/send',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: moveMessage }),
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Protokollieren des Zuges:', error);
+        }
+    });
+}
+
+
+// Eingaben sanitieren (sichert gegen XSS)
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}
+
+// Long Polling starten
+pollMessages();
