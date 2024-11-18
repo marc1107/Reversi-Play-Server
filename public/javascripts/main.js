@@ -50,7 +50,6 @@ function getPlayerNames() {
         success: function(response) {
             const player1Name = response.player1Name;
             const player2Name = response.player2Name;
-            console.log(response);
             localStorage.setItem("player1Name", player1Name);
             localStorage.setItem("player2Name", player2Name);
             updatePlayerNames(currentPlayer);
@@ -234,7 +233,6 @@ function updateBoard(newBoard) {
         return;
     }
 
-    logMoveInChat(tempRow, tempCol);
     playClickSound();
 
 
