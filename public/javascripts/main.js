@@ -29,9 +29,37 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // Verhindert das Standardverhalten des Links
         localStorage.setItem("player1Name", player1Input.value);
         localStorage.setItem("player2Name", player2Input.value);
+
+        $.ajax({
+            url: `/playerNames/${player1Input.value}/${player2Input.value}`,
+            method: 'GET',
+            contentType: 'application/json',
+            error: function(xhr, status, error) {
+                console.error('Error updating player names:', error);
+            }
+        })
+
         window.location.href = playButton.href; // Navigiert zur nächsten Seite
     });
 });
+
+function getPlayerNames() {
+    $.ajax({
+        url: '/playerNames',
+        method: 'GET',
+        success: function(response) {
+            const player1Name = response.player1Name;
+            const player2Name = response.player2Name;
+            console.log(response);
+            localStorage.setItem("player1Name", player1Name);
+            localStorage.setItem("player2Name", player2Name);
+            updatePlayerNames(currentPlayer);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error getting player names:', error);
+        }
+    });
+}
 
 function updatePlayerNames(currentPlayerState) {
     // Spielername aus localStorage holen oder Fallback-Werte verwenden
@@ -345,13 +373,6 @@ function getField() {
     });
 }
 
-$( document ).ready(function() {
-    hintsLevel = 0;
-    getField();
-    connectWebSocket()
-});
-
-
 // Code für den chat
 
 // Holt den Namen des aktuellen Spielers aus localStorage
@@ -447,3 +468,10 @@ function sanitizeInput(input) {
 
 // Long Polling starten
 pollMessages();
+
+$( document ).ready(function() {
+    hintsLevel = 0;
+    getPlayerNames();
+    getField();
+    connectWebSocket()
+});

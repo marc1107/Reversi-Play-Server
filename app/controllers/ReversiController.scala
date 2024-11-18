@@ -135,6 +135,21 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     fieldJson
   }
 
+  def getPlayerNames: Action[AnyContent] = Action {
+    println("Getting player names " + GameState.playerNames)
+
+    val playerNames = Json.obj(
+      "player1Name" -> GameState.playerNames("player_1"),
+      "player2Name" -> GameState.playerNames("player_2")
+    )
+    Ok(playerNames)
+  }
+
+  def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action {
+    GameState.changePlayerNames(player1, player2)
+    Ok("Player names changed")
+  }
+
   private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 
 

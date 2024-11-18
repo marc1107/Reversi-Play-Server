@@ -4,6 +4,7 @@ import org.apache.pekko.actor.ActorRef
 
 object GameState {
   var connectedPlayers: Set[String] = Set()
+  var playerNames: Map[String, String] = Map("player_1" -> "Spieler 1", "player_2" -> "Spieler 2")
   var webSocketConnections: Set[ActorRef] = Set()
   var currentPlayerTurn: Option[String] = Some("player_1") // Track whose turn it is (player_1 or player_2)
 
@@ -21,6 +22,11 @@ object GameState {
   }
 
   def isGameFull: Boolean = connectedPlayers.size >= 2
+
+  def changePlayerNames(player1: String, player2: String): Unit = {
+    println("Changing player names to " + player1 + " and " + player2)
+    playerNames = Map("player_1" -> player1, "player_2" -> player2)
+  }
 
   def isPlayerTurn(playerId: String): Boolean = {
     currentPlayerTurn.contains(playerId)
