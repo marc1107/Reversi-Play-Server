@@ -29,9 +29,36 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // Verhindert das Standardverhalten des Links
         localStorage.setItem("player1Name", player1Input.value);
         localStorage.setItem("player2Name", player2Input.value);
+
+        $.ajax({
+            url: `/playerNames/${player1Input.value}/${player2Input.value}`,
+            method: 'GET',
+            contentType: 'application/json',
+            error: function(xhr, status, error) {
+                console.error('Error updating player names:', error);
+            }
+        })
+
         window.location.href = playButton.href; // Navigiert zur nächsten Seite
     });
 });
+
+function getPlayerNames() {
+    $.ajax({
+        url: '/playerNames',
+        method: 'GET',
+        success: function(response) {
+            const player1Name = response.player1Name;
+            const player2Name = response.player2Name;
+            localStorage.setItem("player1Name", player1Name);
+            localStorage.setItem("player2Name", player2Name);
+            updatePlayerNames(currentPlayer);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error getting player names:', error);
+        }
+    });
+}
 
 function updatePlayerNames(currentPlayerState) {
     // Spielername aus localStorage holen oder Fallback-Werte verwenden
@@ -206,7 +233,6 @@ function updateBoard(newBoard) {
         return;
     }
 
-    logMoveInChat(tempRow, tempCol);
     playClickSound();
 
 
@@ -227,8 +253,10 @@ function changeHintsLevel() {
 }
 
 function connectWebSocket() {
-    websocket = new WebSocket("ws://localhost:9000/websocket");
-    websocket.setTimeout
+    const baseUrl = window.location.origin.replace(/^http/, 'ws');
+    const websocketServerUrl = `${baseUrl}/websocket`;
+    websocket = new WebSocket(websocketServerUrl);
+    websocket.setTimeout;
 
     websocket.onopen = function() {
         console.log("Connected to Websocket");
@@ -343,13 +371,6 @@ function getField() {
     });
 }
 
-$( document ).ready(function() {
-    hintsLevel = 0;
-    getField();
-    connectWebSocket()
-});
-
-
 // Code für den chat
 
 // Holt den Namen des aktuellen Spielers aus localStorage
@@ -419,23 +440,6 @@ function sendMessage() {
     });
 }
 
-// Zeigt Spielzüge im Chat
-function logMoveInChat(row, col) {
-    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
-    const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
-
-    $.ajax({
-        url: '/chat/send',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ message: moveMessage }),
-        error: function(xhr, status, error) {
-            console.error('Fehler beim Protokollieren des Zuges:', error);
-        }
-    });
-}
-
-
 // Eingaben sanitieren (sichert gegen XSS)
 function sanitizeInput(input) {
     const div = document.createElement('div');
@@ -445,3 +449,10 @@ function sanitizeInput(input) {
 
 // Long Polling starten
 pollMessages();
+
+$( document ).ready(function() {
+    hintsLevel = 0;
+    getPlayerNames();
+    getField();
+    connectWebSocket()
+});
