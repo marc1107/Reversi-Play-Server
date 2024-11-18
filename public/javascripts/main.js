@@ -440,23 +440,6 @@ function sendMessage() {
     });
 }
 
-// Zeigt Spielzüge im Chat
-function logMoveInChat(row, col) {
-    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
-    const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
-
-    $.ajax({
-        url: '/chat/send',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ message: moveMessage }),
-        error: function(xhr, status, error) {
-            console.error('Fehler beim Protokollieren des Zuges:', error);
-        }
-    });
-}
-
-
 // Eingaben sanitieren (sichert gegen XSS)
 function sanitizeInput(input) {
     const div = document.createElement('div');
