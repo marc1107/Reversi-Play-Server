@@ -147,6 +147,7 @@ function isMovePossible(row, col) {
 
 function makeMove(row, col) {
     websocket.send(JSON.stringify({row: row, col: col}));
+    logMoveInChat(row, col);
 
     /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
@@ -223,7 +224,7 @@ function connectWebSocket() {
     websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout
 
-    websocket.onopen = function(event) {
+    websocket.onopen = function() {
         console.log("Connected to Websocket");
     }
 
@@ -341,3 +342,100 @@ $( document ).ready(function() {
     getField();
     connectWebSocket()
 });
+
+
+// Code für den chat
+
+// Holt den Namen des aktuellen Spielers aus localStorage
+function getCurrentPlayerName() {
+    const player1Name = localStorage.getItem("player1Name") || "Spieler1";
+    const player2Name = localStorage.getItem("player2Name") || "Spieler2";
+    return currentPlayer === "B" ? player1Name : player2Name;
+}
+
+// Long Polling für den Empfang von Nachrichten
+function pollMessages() {
+    $.ajax({
+        url: '/chat/messages',
+        method: 'GET',
+        success: function(messages) {
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = ''; // Vorherige Nachrichten löschen
+
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+
+                // Prüfen, ob die Nachricht ein Spielzug ist
+                if (message.includes('hat einen Zug auf')) {
+                    messageElement.className = 'move'; // Klasse für Spielzug
+                } else {
+                    messageElement.className = 'message'; // Klasse für normale Nachricht
+                }
+
+                messageElement.textContent = message;
+                chatMessages.appendChild(messageElement);
+            });
+
+            // Automatisch nach unten scrollen
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Abrufen der Nachrichten:', error);
+        },
+        complete: function() {
+            setTimeout(pollMessages, 3000); // Polling alle 3 Sekunden
+        }
+    });
+}
+
+
+// Nachrichten senden mit aktuellem Spieler
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+
+    if (!message) return; // Leere Nachrichten ignorieren
+
+    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
+    const fullMessage = `${playerName}: ${sanitizeInput(message)}`; // Nachricht mit Spielername
+
+    $.ajax({
+        url: '/chat/send',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: fullMessage }),
+        success: function() {
+            input.value = ''; // Eingabefeld leeren
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Senden der Nachricht:', error);
+        }
+    });
+}
+
+// Zeigt Spielzüge im Chat
+function logMoveInChat(row, col) {
+    const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
+    const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
+
+    $.ajax({
+        url: '/chat/send',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: moveMessage }),
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Protokollieren des Zuges:', error);
+        }
+    });
+}
+
+
+// Eingaben sanitieren (sichert gegen XSS)
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}
+
+// Long Polling starten
+pollMessages();

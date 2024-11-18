@@ -13,12 +13,25 @@
     <audio id="error-sound1" src="@routes.Assets.versioned("sounds/error1.mp3")" preload="auto"></audio>
     <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
 
-
     <div class="scroll-container">
+        <div class="chat-container">
+            <h2>Chat</h2>
+            <div id="chat-messages" class="chat-messages">
+                    <!-- Nachrichten werden hier dynamisch eingefügt -->
+            </div>
+            <div class="chat-input">
+                <label for="chat-input"></label>
+                <input type="text" id="chat-input" placeholder="Nachricht eingeben...">
+                <button id="send-button" onclick="sendMessage()">Senden</button>
+            </div>
+        </div>
         <div class="content">
+
             <div class="header-container">
                 <h1>Reversi</h1>
             </div>
+
+
             <div id="widthDisplay"></div>
 
             @playerturn(playerState)
