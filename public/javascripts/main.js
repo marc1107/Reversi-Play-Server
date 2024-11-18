@@ -355,14 +355,10 @@ function getCurrentPlayerName() {
 
 // Long Polling für den Empfang von Nachrichten
 function pollMessages() {
-    fetch('/chat/messages')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Fehler beim Abrufen: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(messages => {
+    $.ajax({
+        url: '/chat/messages',
+        method: 'GET',
+        success: function(messages) {
             const chatMessages = document.getElementById('chat-messages');
             chatMessages.innerHTML = ''; // Vorherige Nachrichten löschen
 
@@ -382,11 +378,14 @@ function pollMessages() {
 
             // Automatisch nach unten scrollen
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        })
-        .catch(err => console.error('Fehler beim Abrufen der Nachrichten:', err))
-        .finally(() => {
-            setTimeout(pollMessages, 300); // Polling alle 3 Sekunden
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Abrufen der Nachrichten:', error);
+        },
+        complete: function() {
+            setTimeout(pollMessages, 3000); // Polling alle 3 Sekunden
+        }
+    });
 }
 
 
@@ -400,15 +399,18 @@ function sendMessage() {
     const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
     const fullMessage = `${playerName}: ${sanitizeInput(message)}`; // Nachricht mit Spielername
 
-    fetch('/chat/send', {
+    $.ajax({
+        url: '/chat/send',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: fullMessage })
-    })
-        .then(() => {
+        contentType: 'application/json',
+        data: JSON.stringify({ message: fullMessage }),
+        success: function() {
             input.value = ''; // Eingabefeld leeren
-        })
-        .catch(err => console.error('Fehler beim Senden der Nachricht:', err));
+        },
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Senden der Nachricht:', error);
+        }
+    });
 }
 
 // Zeigt Spielzüge im Chat
@@ -416,12 +418,17 @@ function logMoveInChat(row, col) {
     const playerName = getCurrentPlayerName(); // Aktuellen Spielername holen
     const moveMessage = `${playerName} hat einen Zug auf [${row}, ${col}] gemacht.`;
 
-    fetch('/chat/send', {
+    $.ajax({
+        url: '/chat/send',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: moveMessage })
-    }).catch(err => console.error('Fehler beim Protokollieren des Zuges:', err));
+        contentType: 'application/json',
+        data: JSON.stringify({ message: moveMessage }),
+        error: function(xhr, status, error) {
+            console.error('Fehler beim Protokollieren des Zuges:', error);
+        }
+    });
 }
+
 
 // Eingaben sanitieren (sichert gegen XSS)
 function sanitizeInput(input) {

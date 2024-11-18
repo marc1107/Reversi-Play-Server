@@ -216,23 +216,16 @@ select:focus {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-
-.chat-messages .message {
-  color: #000;
-}
-
-.chat-messages .move {
-  color: #555;
-  font-style: italic;
-}
-
 .chat-container {
-  width: 80%;
-  float: left;
+  position: absolute; /* Absolut positioniert */
+  top: 300px;          /* Abstand vom oberen Rand */
+  left: 50px;         /* Abstand vom linken Rand */
+  width: 450px;       /* Feste Breite */
   background-color: rgba(0, 150, 0, 0.6);
   padding: 10px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border: 3px solid black;
+  z-index: 1000;      /* Stellt sicher, dass der Chat im Vordergrund bleibt */
 }
 
 .chat-messages {
@@ -256,4 +249,13 @@ select:focus {
 
 .chat-input button {
   padding: 5px 10px;
+}
+
+.chat-messages .message {
+  color: #000;
+}
+
+.chat-messages .move {
+  color: #555;
+  font-style: italic;
 }
