@@ -230,7 +230,7 @@ function connectWebSocket() {
     const baseUrl = window.location.origin.replace(/^http/, 'ws');
     const websocketServerUrl = `${baseUrl}/websocket`;
     websocket = new WebSocket(websocketServerUrl);
-    websocket.setTimeout
+    websocket.setTimeout;
 
     websocket.onopen = function() {
         console.log("Connected to Websocket");
