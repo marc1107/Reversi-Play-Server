@@ -227,7 +227,9 @@ function changeHintsLevel() {
 }
 
 function connectWebSocket() {
-    websocket = new WebSocket("ws://localhost:9000/websocket");
+    const baseUrl = window.location.origin.replace(/^http/, 'ws');
+    const websocketServerUrl = `${baseUrl}/websocket`;
+    websocket = new WebSocket(websocketServerUrl);
     websocket.setTimeout
 
     websocket.onopen = function() {
