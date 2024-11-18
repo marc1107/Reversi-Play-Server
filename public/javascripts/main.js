@@ -3,6 +3,9 @@ let currentField;
 let currentPlayer;
 let hintsLevel;
 var websocket;
+var tempRow;
+var tempCol;
+var tempPlayer;
 
 document.addEventListener("DOMContentLoaded", function() {
     const player1Input = document.getElementById("player1");
@@ -147,8 +150,8 @@ function isMovePossible(row, col) {
 
 function makeMove(row, col) {
     websocket.send(JSON.stringify({row: row, col: col}));
-    logMoveInChat(row, col);
-
+    tempRow = row;
+    tempCol = col;
     /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
@@ -164,6 +167,7 @@ function makeMove(row, col) {
 function updateBoard(newBoard) {
     const updatedBoard = newBoard.cells;
     const size = newBoard.size;
+    tempPlayer = currentPlayer;
     currentPlayer = newBoard.playerState;
 
     let changed = false;
@@ -202,7 +206,9 @@ function updateBoard(newBoard) {
         return;
     }
 
+    logMoveInChat(tempRow, tempCol);
     playClickSound();
+
 
     // Update the current player display
     const playerClass = currentPlayer === "B" ? "black" : "white";
@@ -350,7 +356,7 @@ $( document ).ready(function() {
 function getCurrentPlayerName() {
     const player1Name = localStorage.getItem("player1Name") || "Spieler1";
     const player2Name = localStorage.getItem("player2Name") || "Spieler2";
-    return currentPlayer === "B" ? player1Name : player2Name;
+    return tempPlayer === "B" ? player1Name : player2Name;
 }
 
 // Long Polling für den Empfang von Nachrichten
@@ -383,7 +389,7 @@ function pollMessages() {
             console.error('Fehler beim Abrufen der Nachrichten:', error);
         },
         complete: function() {
-            setTimeout(pollMessages, 3000); // Polling alle 3 Sekunden
+            setTimeout(pollMessages, 300);
         }
     });
 }
