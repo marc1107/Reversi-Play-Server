@@ -3,8 +3,6 @@ let currentField;
 let currentPlayer;
 let hintsLevel;
 var websocket;
-var tempRow;
-var tempCol;
 var tempPlayer;
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -176,9 +174,10 @@ function isMovePossible(row, col) {
 }
 
 function makeMove(row, col) {
+    // using websockets
     websocket.send(JSON.stringify({row: row, col: col}));
-    tempRow = row;
-    tempCol = col;
+
+    // using ajax
     /*$.ajax({
         url: `/makeMoveAjax/${row}/${col}`,
         method: 'GET',
