@@ -98,6 +98,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
   }
 
   def makeMoveAjax(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    println(s"makeMoveAjax called with row: $row, col: $col")
     val oldBoard = gameController.field
     val oldBoardJson = fieldToJson(oldBoard)
     doMove(row, col)
@@ -107,7 +108,13 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
       "oldBoard" -> oldBoardJson,
       "newBoard" -> boardJson
     )
-    Ok(response)
+
+    // Antwort mit CORS-Headern zurückgeben
+    Ok(response).withHeaders(
+      "Access-Control-Allow-Origin" -> "http://localhost:3000", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
 
   def getField(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -143,10 +150,18 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     Ok(playerNames)
   }
 
-  def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action {
+  def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    println(s"setPlayerNames called with player1: $player1, player2: $player2")
     GameState.changePlayerNames(player1, player2)
-    Ok("Player names changed")
+
+    // Antwort mit CORS-Headern zurückgeben
+    Ok("Player names changed").withHeaders(
+      "Access-Control-Allow-Origin" -> "http://localhost:3000", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
+
 
   private def doMove(row: Int, column: Int): Unit = gameController.doAndPublish(gameController.put, Move(gameController.playerState.getStone, row, column))
 
