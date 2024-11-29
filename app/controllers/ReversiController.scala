@@ -27,6 +27,8 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
    */
 
   private val gameController = Reversi.controller
+  private val baseUrl = "https://reversi-vue-6c1a84673c8d.herokuapp.com"
+  //private val baseUrl = "http://localhost:9000"
 
   implicit val stoneWrites: Writes[Stone] = Writes[Stone] {
     case Stone.Empty => Json.toJson("EMPTY")
@@ -111,7 +113,24 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     // Antwort mit CORS-Headern zurückgeben
     Ok(response).withHeaders(
-      "Access-Control-Allow-Origin" -> "https://reversi-vue-6c1a84673c8d.herokuapp.com", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
+  }
+
+  def newGame(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val oldBoard = gameController.field
+    val oldBoardJson = fieldToJson(oldBoard)
+    gameController.newGame()
+    val updatedBoard = gameController.field
+    val boardJson = fieldToJson(updatedBoard)
+    val response = Json.obj(
+      "oldBoard" -> oldBoardJson,
+      "newBoard" -> boardJson
+    )
+    Ok(response).withHeaders(
+      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
@@ -156,7 +175,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     // Antwort mit CORS-Headern zurückgeben
     Ok("Player names changed").withHeaders(
-      "Access-Control-Allow-Origin" -> "https://reversi-vue-6c1a84673c8d.herokuapp.com", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )

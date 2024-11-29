@@ -370,6 +370,21 @@ function getField() {
     });
 }
 
+function newGame() {
+    $.ajax({
+        url: '/newGame',
+        method: 'GET',
+        success: function(response) {
+            tempPlayer = response.newBoard.playerState;
+            currentField = response.newBoard.cells;
+            updateBoard(response.newBoard);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error starting new game:", error);
+        }
+    });
+}
+
 // Code für den chat
 
 // Holt den Namen des aktuellen Spielers aus localStorage
