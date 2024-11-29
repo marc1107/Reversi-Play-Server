@@ -111,7 +111,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     // Antwort mit CORS-Headern zurückgeben
     Ok(response).withHeaders(
-      "Access-Control-Allow-Origin" -> "http://localhost:3000", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> "http://localhost:3000, https://reversi-vue-6c1a84673c8d.herokuapp.com", // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
@@ -156,7 +156,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     // Antwort mit CORS-Headern zurückgeben
     Ok("Player names changed").withHeaders(
-      "Access-Control-Allow-Origin" -> "http://localhost:3000", // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> "http://localhost:3000, https://reversi-vue-6c1a84673c8d.herokuapp.com", // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
