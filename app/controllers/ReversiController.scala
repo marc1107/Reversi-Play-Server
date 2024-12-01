@@ -27,8 +27,8 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
    */
 
   private val gameController = Reversi.controller
-  private val baseUrl = "https://reversi-vue-6c1a84673c8d.herokuapp.com"
-  //private val baseUrl = "http://localhost:9000"
+  //private val baseUrl = "https://reversi-vue-6c1a84673c8d.herokuapp.com"
+  private val baseUrl = "http://localhost:3000"
 
   implicit val stoneWrites: Writes[Stone] = Writes[Stone] {
     case Stone.Empty => Json.toJson("EMPTY")
