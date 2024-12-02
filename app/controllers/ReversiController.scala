@@ -141,7 +141,11 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     val response = Json.obj(
       "newBoard" -> fieldToJson(field)
     )
-    Ok(response)
+    Ok(response).withHeaders(
+      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
 
   def rules(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
