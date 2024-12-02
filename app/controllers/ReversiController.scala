@@ -28,7 +28,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
   private val gameController = Reversi.controller
   private val baseUrl = "https://reversi-vue-6c1a84673c8d.herokuapp.com"
-  //private val baseUrl = "http://localhost:9000"
+  //private val baseUrl = "http://localhost:3000"
 
   implicit val stoneWrites: Writes[Stone] = Writes[Stone] {
     case Stone.Empty => Json.toJson("EMPTY")
@@ -101,6 +101,7 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
   def makeMoveAjax(row: Int, col: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     println(s"makeMoveAjax called with row: $row, col: $col")
+    val origin = request.headers.get("Origin").getOrElse(baseUrl)
     val oldBoard = gameController.field
     val oldBoardJson = fieldToJson(oldBoard)
     doMove(row, col)
@@ -113,13 +114,14 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
 
     // Antwort mit CORS-Headern zurückgeben
     Ok(response).withHeaders(
-      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> origin, // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
   }
 
   def newGame(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val origin = request.headers.get("Origin").getOrElse(baseUrl)
     val oldBoard = gameController.field
     val oldBoardJson = fieldToJson(oldBoard)
     gameController.newGame()
@@ -130,18 +132,23 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
       "newBoard" -> boardJson
     )
     Ok(response).withHeaders(
-      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> origin, // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
   }
 
   def getField(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val origin = request.headers.get("Origin").getOrElse(baseUrl)
     val field = gameController.field
     val response = Json.obj(
       "newBoard" -> fieldToJson(field)
     )
-    Ok(response)
+    Ok(response).withHeaders(
+      "Access-Control-Allow-Origin" -> origin, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
 
   def rules(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -161,21 +168,27 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
     fieldJson
   }
 
-  def getPlayerNames: Action[AnyContent] = Action {
+  def getPlayerNames: Action[AnyContent] = Action { request =>
+    val origin = request.headers.get("Origin").getOrElse(baseUrl)
     val playerNames = Json.obj(
       "player1Name" -> GameState.playerNames("player_1"),
       "player2Name" -> GameState.playerNames("player_2")
     )
-    Ok(playerNames)
+    Ok(playerNames).withHeaders(
+      "Access-Control-Allow-Origin" -> origin, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
 
   def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     println(s"setPlayerNames called with player1: $player1, player2: $player2")
     GameState.changePlayerNames(player1, player2)
 
+    val origin = request.headers.get("Origin").getOrElse(baseUrl)
     // Antwort mit CORS-Headern zurückgeben
     Ok("Player names changed").withHeaders(
-      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Origin" -> origin, // Erlaubt Anfragen vom Frontend
       "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
       "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
     )
