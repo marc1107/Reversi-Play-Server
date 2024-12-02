@@ -170,7 +170,11 @@ class ReversiController @Inject()(val controllerComponents: ControllerComponents
       "player1Name" -> GameState.playerNames("player_1"),
       "player2Name" -> GameState.playerNames("player_2")
     )
-    Ok(playerNames)
+    Ok(playerNames).withHeaders(
+      "Access-Control-Allow-Origin" -> baseUrl, // Erlaubt Anfragen vom Frontend
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS", // Erlaubte Methoden
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With" // Erlaubte Header
+    )
   }
 
   def setPlayerNames(player1: String, player2: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
